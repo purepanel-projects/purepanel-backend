@@ -1,0 +1,6 @@
+server:
+  port: 1226
+
+spring:
+  application:
+    name: purepanel-backend
