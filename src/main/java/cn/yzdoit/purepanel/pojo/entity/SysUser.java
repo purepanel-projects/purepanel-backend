@@ -64,7 +64,7 @@ public class SysUser extends BaseEntity {
      */
     @TableField(value = "status")
     @Schema(description = "状态 0禁用 1启用")
-    private String status;
+    private Integer status;
 
     /**
      * 邮箱
