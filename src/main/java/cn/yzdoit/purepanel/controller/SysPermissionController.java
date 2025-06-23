@@ -1,9 +1,9 @@
 package cn.yzdoit.purepanel.controller;
 
-import cn.yzdoit.purepanel.pojo.entity.Permission;
-import cn.yzdoit.purepanel.pojo.res.PermissionTreeListRes;
+import cn.yzdoit.purepanel.pojo.entity.SysPermission;
+import cn.yzdoit.purepanel.pojo.res.SysPermissionTreeListRes;
 import cn.yzdoit.purepanel.pojo.res.Res;
-import cn.yzdoit.purepanel.service.PermissionService;
+import cn.yzdoit.purepanel.service.SysPermissionService;
 import cn.yzdoit.purepanel.utils.TreeListUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -15,23 +15,25 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
+ * 菜单权限相关接口
+ *
  * @author 闫政
  * @since 2025/6/17 15:07 星期二
  */
 @Tag(name = "菜单权限相关接口")
 @RestController
-@RequestMapping("/permission")
+@RequestMapping("/sysPermission")
 @RequiredArgsConstructor
-public class PermissionController {
+public class SysPermissionController {
 
-    private final PermissionService permissionService;
+    private final SysPermissionService sysPermissionService;
 
     @GetMapping("/treeList")
     @Operation(summary = "获取树形列表")
-    public Res<List<PermissionTreeListRes>> treeList() {
-        List<Permission> list = permissionService.list();
-        List<PermissionTreeListRes> tree = TreeListUtils.toTree(list, Permission::getId, Permission::getPid
-                , PermissionTreeListRes::setChildren, PermissionTreeListRes.class);
+    public Res<List<SysPermissionTreeListRes>> treeList() {
+        List<SysPermission> list = sysPermissionService.list();
+        List<SysPermissionTreeListRes> tree = TreeListUtils.toTree(list, SysPermission::getId, SysPermission::getPid
+                , SysPermissionTreeListRes::setChildren, SysPermissionTreeListRes.class);
         return Res.success(tree);
     }
 }

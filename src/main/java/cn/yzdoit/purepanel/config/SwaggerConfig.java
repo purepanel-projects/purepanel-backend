@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
+ * swagger 配置
+ *
  * @author 闫政
  * @since 2025/6/17 14:51 星期二
  */

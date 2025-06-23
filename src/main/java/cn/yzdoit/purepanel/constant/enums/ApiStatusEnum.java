@@ -3,6 +3,11 @@ package cn.yzdoit.purepanel.constant.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * 响应状态枚举
+ * @author 闫政
+ * @since 2025/6/23 14:36 星期一
+ */
 @Getter
 @AllArgsConstructor
 public enum ApiStatusEnum {

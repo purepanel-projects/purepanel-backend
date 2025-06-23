@@ -4,6 +4,8 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
+ * Purepanel 配置
+ *
  * @author 闫政
  * @since 2025/6/17 16:50 星期二
  */
@@ -14,5 +16,5 @@ public class PurepanelProperties {
     /**
      * 是否开启接口异常信息返回
      */
-    private boolean resExceptionEnabled = true;
+    private Boolean resExceptionEnabled = Boolean.TRUE;
 }

@@ -24,7 +24,7 @@ springdoc:
     path: /swagger
 
 purepanel:
-  res-exception-enabled: false
+  res-exception-enabled: true
 
 logging:
   level:

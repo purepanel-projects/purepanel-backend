@@ -3,6 +3,7 @@ package cn.yzdoit.purepanel.pojo.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.Version;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -25,7 +26,7 @@ public class BaseEntity implements Serializable {
     /**
      * 主键
      */
-    @TableId(type = IdType.ASSIGN_UUID, value = "id")
+    @TableId(type = IdType.ASSIGN_ID, value = "id")
     @Schema(description = "主键")
     private String id;
 
@@ -56,4 +57,12 @@ public class BaseEntity implements Serializable {
     @TableField(value = "update_by_user_id")
     @Schema(description = "更新人")
     private String updateByUserId;
+
+    /**
+     * 数据版本
+     */
+    @Version
+    @TableField(value = "version")
+    @Schema(description = "数据版本")
+    private Integer version;
 }
