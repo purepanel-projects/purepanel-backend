@@ -1,6 +1,7 @@
 package cn.yzdoit.purepanel.service.impl;
 
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.json.JSONUtil;
 import cn.yzdoit.purepanel.constant.RedisPrefix;
 import cn.yzdoit.purepanel.mapper.SysUserMapper;
 import cn.yzdoit.purepanel.pojo.entity.SysUser;
@@ -40,7 +41,7 @@ public class LoginServiceImpl implements LoginService {
     public GetCaptchaRes getCaptcha() {
         SpecCaptcha specCaptcha = new SpecCaptcha(140, 48, 4);
         String captchaKey = IdUtil.fastSimpleUUID();
-        redisTemplate.opsForValue().set(RedisPrefix.SYS_CAPTCHA + captchaKey, specCaptcha.text(), 5, TimeUnit.MINUTES);
+        redisTemplate.opsForValue().set(RedisPrefix.SYS_CAPTCHA + captchaKey, specCaptcha.text(), 1, TimeUnit.MINUTES);
         return GetCaptchaRes.builder()
                 .captchaBase64(specCaptcha.toBase64())
                 .captchaKey(captchaKey)
@@ -57,13 +58,26 @@ public class LoginServiceImpl implements LoginService {
     public AccountLoginRes accountLogin(AccountLoginReq req) {
         //前置校验
         String captchaCache = redisTemplate.opsForValue().get(RedisPrefix.SYS_CAPTCHA + req.getCaptchaKey());
-        CheckUtils.notBlank(captchaCache, "验证码已过期，请重新获取");
+        CheckUtils.notBlank(captchaCache, "验证码已过期，请点击验证码重新获取");
         CheckUtils.equalsIgnoreCase(captchaCache, req.getCaptcha(), "验证码错误");
         SysUser sysUser = sysUserMapper.selectOne(Wrappers.<SysUser>lambdaQuery()
+                .select(SysUser::getId, SysUser::getName, SysUser::getAccount, SysUser::getAvatar
+                        , SysUser::getStatus, SysUser::getSalt, SysUser::getPwd)
                 .eq(SysUser::getAccount, req.getAccount()));
         CheckUtils.notNull(sysUser, "账号或密码错误");
-        CheckUtils.check(sysUser.getStatus() == 0, "该账号已被禁用");
-        CheckUtils.check(PwdUtils.check(req.getPwd(), sysUser.getSalt(), sysUser.getPwd()), "账号或密码错误");
-        return null;
+        CheckUtils.check(sysUser.getStatus() == 1, "该账号已被禁用");
+        CheckUtils.check(PwdUtils.verify(req.getPwd(), sysUser.getSalt(), sysUser.getPwd()), "账号或密码错误");
+        //移除非必要字段
+        sysUser.setPwd(null);
+        sysUser.setSalt(null);
+        sysUser.setStatus(null);
+        //生成登录码
+        String loginCode = IdUtil.fastSimpleUUID();
+        redisTemplate.opsForValue().set(RedisPrefix.SYS_LOGIN_STATE + loginCode, JSONUtil.toJsonStr(sysUser)
+                , 1, TimeUnit.DAYS);
+        return AccountLoginRes.builder()
+                .loginCode(loginCode)
+                .sysUser(sysUser)
+                .build();
     }
 }

@@ -32,7 +32,7 @@ public class PwdUtils {
      * @param encodedTextPwd  密码密文
      * @return boolean
      */
-    public static boolean check(String originalTextPwd, String salt, String encodedTextPwd) {
+    public static boolean verify(String originalTextPwd, String salt, String encodedTextPwd) {
         return StrUtil.equals(encode(originalTextPwd, salt).getA(), encodedTextPwd);
     }
 

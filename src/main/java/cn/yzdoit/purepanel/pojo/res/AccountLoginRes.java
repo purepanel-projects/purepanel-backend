@@ -24,10 +24,10 @@ public class AccountLoginRes implements Serializable {
 
 
     /**
-     * token
+     * loginCode
      */
-    @Schema(description = "token")
-    private String token;
+    @Schema(description = "loginCode")
+    private String loginCode;
 
     /**
      * 用户信息

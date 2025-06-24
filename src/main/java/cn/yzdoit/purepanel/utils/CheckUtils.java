@@ -16,7 +16,7 @@ public class CheckUtils {
         check(!StrUtil.equals(textA, textB), msg);
     }
     public static void equalsIgnoreCase(String textA, String textB, String msg) {
-        check(!StrUtil.equalsIgnoreCase(textA, textB), msg);
+        check(StrUtil.equalsIgnoreCase(textA, textB), msg);
     }
 
     public static void notNull(Object obj, String msg) {

@@ -13,4 +13,9 @@ public class RedisPrefix {
      * 登录验证码
      */
     public static final String SYS_CAPTCHA = "SYS:CAPTCHA:";
+
+    /**
+     * 登录验证码
+     */
+    public static final String SYS_LOGIN_STATE = "SYS:LOGIN_STATE:";
 }

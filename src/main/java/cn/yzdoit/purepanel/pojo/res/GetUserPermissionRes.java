@@ -24,7 +24,6 @@ public class GetUserPermissionRes implements Serializable {
     @Serial
     private static final long serialVersionUID = -4094662321270393724L;
 
-
     /**
      * 菜单树
      */
