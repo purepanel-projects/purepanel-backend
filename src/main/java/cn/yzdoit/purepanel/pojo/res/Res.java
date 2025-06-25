@@ -89,6 +89,10 @@ public class Res<T> implements Serializable {
         return build(apiStatusEnum.getStatus(), apiStatusEnum.getMsg(), payload, null);
     }
 
+    public static <T> Res<T> build(Integer status, String msg) {
+        return build(status, msg, null, null);
+    }
+
     public static <T> Res<T> build(Integer status, String msg, T payload, String exceptionInfo) {
         return new Res<>(status, msg, payload, exceptionInfo, LocalDateTime.now(), ZoneId.systemDefault().getId());
     }

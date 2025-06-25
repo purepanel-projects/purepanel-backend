@@ -74,7 +74,7 @@ public class LoginServiceImpl implements LoginService {
         //生成登录码
         String loginCode = IdUtil.fastSimpleUUID();
         redisTemplate.opsForValue().set(RedisPrefix.SYS_LOGIN_STATE + loginCode, JSONUtil.toJsonStr(sysUser)
-                , 1, TimeUnit.DAYS);
+                , 30, TimeUnit.DAYS);
         return AccountLoginRes.builder()
                 .loginCode(loginCode)
                 .sysUser(sysUser)

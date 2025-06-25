@@ -1,0 +1,28 @@
+package cn.yzdoit.purepanel.config;
+
+import cn.yzdoit.purepanel.interceptor.LoginCodeInterceptor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+/**
+ * @author 闫政
+ * @since 2025/6/25 06:59 星期三
+ */
+@Configuration
+@RequiredArgsConstructor
+public class WebConfig implements WebMvcConfigurer {
+
+    private final StringRedisTemplate redisTemplate;
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new LoginCodeInterceptor(redisTemplate))
+                //拦截的路径
+                .addPathPatterns("/**")
+                //排除的路径
+                .excludePathPatterns("/login/**");
+    }
+}

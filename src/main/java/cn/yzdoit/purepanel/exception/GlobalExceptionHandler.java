@@ -84,7 +84,7 @@ public class GlobalExceptionHandler {
         if (e.getResIsException() && purepanelProperties.getResExceptionEnabled()) {
             return Res.exception(e.getMessage());
         }
-        return Res.fail(e.getMessage());
+        return Res.build(e.getStatus(), e.getMessage());
     }
 
     /**
