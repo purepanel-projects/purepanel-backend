@@ -1,6 +1,7 @@
 package cn.yzdoit.purepanel.service;
 
 import cn.yzdoit.purepanel.pojo.entity.SysPermission;
+import cn.yzdoit.purepanel.pojo.res.GetUserPermissionRes;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -10,4 +11,12 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2025/6/17 15:06 星期二
  */
 public interface SysPermissionService extends IService<SysPermission> {
+
+    /**
+     * 获取用户权限
+     *
+     * @param userId 用户id
+     * @return GetUserPermissionRes
+     */
+    GetUserPermissionRes getUserPermission(String userId);
 }

@@ -38,10 +38,9 @@ public class SysPermissionController {
         return Res.success(tree);
     }
 
-    @GetMapping("/getUserPermission")
-    @Operation(summary = "获取用户权限")
-    public Res<GetUserPermissionRes> getUserPermission(@RequestAttribute("loginUserId") String loginUserId) {
-        log.info(loginUserId);
-        return null;
+    @GetMapping("/getLoginUserPermission")
+    @Operation(summary = "获取登录用户的权限")
+    public Res<GetUserPermissionRes> getLoginUserPermission(@RequestAttribute("loginUserId") String loginUserId) {
+        return Res.success(sysPermissionService.getUserPermission(loginUserId));
     }
 }

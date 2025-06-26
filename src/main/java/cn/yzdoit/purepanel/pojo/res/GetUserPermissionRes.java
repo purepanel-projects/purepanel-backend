@@ -28,11 +28,15 @@ public class GetUserPermissionRes implements Serializable {
      * 菜单树
      */
     @Schema(description = "菜单树")
-    private List<SysPermissionTreeListRes> menuList;
+    private List<SysPermissionTreeListRes> menuTree;
 
     /**
      * 按钮列表
      */
     @Schema(description = "按钮列表")
     private List<SysPermission> btnList;
+
+    public static GetUserPermissionRes empty() {
+        return GetUserPermissionRes.builder().build();
+    }
 }

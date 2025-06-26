@@ -1,6 +1,7 @@
 package cn.yzdoit.purepanel.utils;
 
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.yzdoit.purepanel.exception.BusinessException;
 
@@ -15,8 +16,13 @@ public class CheckUtils {
     public static void equals(String textA, String textB, String msg) {
         check(!StrUtil.equals(textA, textB), msg);
     }
+
     public static void equalsIgnoreCase(String textA, String textB, String msg) {
         check(StrUtil.equalsIgnoreCase(textA, textB), msg);
+    }
+
+    public static void notEmpty(Object obj, String msg) {
+        check(ObjectUtil.isNotEmpty(obj), msg);
     }
 
     public static void notNull(Object obj, String msg) {
