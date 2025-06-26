@@ -59,7 +59,8 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         }
         //获取权限信息
         List<SysPermission> permissionList = sysPermissionMapper.selectList(Wrappers.<SysPermission>lambdaQuery()
-                .in(SysPermission::getId, permissionIdList));
+                .in(SysPermission::getId, permissionIdList)
+                .orderByAsc(SysPermission::getOrderNo));
         if (CollectionUtil.isEmpty(permissionList)) {
             return GetUserPermissionRes.empty();
         }
