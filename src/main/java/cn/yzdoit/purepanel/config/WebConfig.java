@@ -1,6 +1,7 @@
 package cn.yzdoit.purepanel.config;
 
 import cn.yzdoit.purepanel.interceptor.LoginCodeInterceptor;
+import cn.yzdoit.purepanel.pojo.properties.PurepanelProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -16,10 +17,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
 
     private final StringRedisTemplate redisTemplate;
+    private final PurepanelProperties purepanelProperties;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new LoginCodeInterceptor(redisTemplate))
+        registry.addInterceptor(new LoginCodeInterceptor(redisTemplate, purepanelProperties))
                 //拦截的路径
                 .addPathPatterns("/**")
                 //排除的路径

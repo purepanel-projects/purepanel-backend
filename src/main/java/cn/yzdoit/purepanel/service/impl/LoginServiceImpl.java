@@ -5,6 +5,7 @@ import cn.hutool.json.JSONUtil;
 import cn.yzdoit.purepanel.constant.RedisPrefix;
 import cn.yzdoit.purepanel.mapper.SysUserMapper;
 import cn.yzdoit.purepanel.pojo.entity.SysUser;
+import cn.yzdoit.purepanel.pojo.properties.PurepanelProperties;
 import cn.yzdoit.purepanel.pojo.req.AccountLoginReq;
 import cn.yzdoit.purepanel.pojo.res.AccountLoginRes;
 import cn.yzdoit.purepanel.pojo.res.GetCaptchaRes;
@@ -31,6 +32,7 @@ public class LoginServiceImpl implements LoginService {
 
     private final StringRedisTemplate redisTemplate;
     private final SysUserMapper sysUserMapper;
+    private final PurepanelProperties purepanelProperties;
 
     /**
      * 获取验证码
@@ -74,7 +76,9 @@ public class LoginServiceImpl implements LoginService {
         //生成登录码
         String loginCode = IdUtil.fastSimpleUUID();
         redisTemplate.opsForValue().set(RedisPrefix.SYS_LOGIN_STATE + loginCode, JSONUtil.toJsonStr(sysUser)
-                , 30, TimeUnit.DAYS);
+                , purepanelProperties.getLoginConfig().getLoginStatusExpireTime(), TimeUnit.HOURS);
+        redisTemplate.opsForValue().set(RedisPrefix.SYS_LATEST_LOGIN_CODE + sysUser.getId(), loginCode
+                , purepanelProperties.getLoginConfig().getLoginStatusExpireTime(), TimeUnit.HOURS);
         return AccountLoginRes.builder()
                 .loginCode(loginCode)
                 .sysUser(sysUser)

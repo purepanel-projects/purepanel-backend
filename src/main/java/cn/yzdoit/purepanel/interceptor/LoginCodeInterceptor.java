@@ -6,6 +6,7 @@ import cn.yzdoit.purepanel.constant.RedisPrefix;
 import cn.yzdoit.purepanel.constant.enums.ApiStatusEnum;
 import cn.yzdoit.purepanel.exception.BusinessException;
 import cn.yzdoit.purepanel.pojo.entity.SysUser;
+import cn.yzdoit.purepanel.pojo.properties.PurepanelProperties;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 public class LoginCodeInterceptor implements HandlerInterceptor {
 
     private final StringRedisTemplate redisTemplate;
+    private final PurepanelProperties purepanelProperties;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
@@ -33,6 +35,13 @@ public class LoginCodeInterceptor implements HandlerInterceptor {
             throw new BusinessException(ApiStatusEnum.UNAUTHORIZED);
         }
         SysUser sysUser = JSONUtil.toBean(loginStateCacheStr, SysUser.class);
+        //校验单会话登录
+        if (purepanelProperties.getLoginConfig().getSingleSessionLoginEnabled()) {
+            String latestLoginCode = redisTemplate.opsForValue().get(RedisPrefix.SYS_LATEST_LOGIN_CODE + sysUser.getId());
+            if (!StrUtil.equals(loginCode, latestLoginCode)) {
+                throw new BusinessException(ApiStatusEnum.UNAUTHORIZED);
+            }
+        }
         request.setAttribute("loginUserId", sysUser.getId());
         request.setAttribute("loginUserAccount", sysUser.getAccount());
         return true;

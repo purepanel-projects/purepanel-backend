@@ -17,4 +17,24 @@ public class PurepanelProperties {
      * 是否开启接口异常信息返回
      */
     private Boolean resExceptionEnabled = Boolean.TRUE;
+
+    /**
+     * 登录配置
+     */
+    private LoginConfig loginConfig;
+
+    @Data
+    public static class LoginConfig {
+
+        /**
+         * 单会话登录 一个账号多次登录会互相挤下线
+         */
+        private Boolean singleSessionLoginEnabled = Boolean.TRUE;
+
+
+        /**
+         * 登录过期时间 单位小时
+         */
+        private Integer loginStatusExpireTime = 12;
+    }
 }

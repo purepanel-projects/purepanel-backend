@@ -30,6 +30,8 @@ springdoc:
 
 purepanel:
   res-exception-enabled: true
+  login-config:
+    single-session-login-enabled: false
 
 logging:
   level:
