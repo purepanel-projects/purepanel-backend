@@ -11,7 +11,7 @@
  Target Server Version : 90300 (9.3.0)
  File Encoding         : 65001
 
- Date: 26/06/2025 08:38:58
+ Date: 27/06/2025 09:01:47
 */
 
 SET NAMES utf8mb4;
@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `sys_permission`;
 CREATE TABLE `sys_permission`  (
   `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '主键',
   `pid` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '父级id',
-  `type` tinyint NOT NULL COMMENT '菜单类型 0菜单 1按钮',
+  `type` tinyint NOT NULL COMMENT '菜单类型 0菜单 1按钮 2菜单组',
   `path` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '访问路径',
   `title` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '标题',
   `icon` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '图标',
@@ -44,13 +44,13 @@ CREATE TABLE `sys_permission`  (
 -- ----------------------------
 -- Records of sys_permission
 -- ----------------------------
-INSERT INTO `sys_permission` VALUES ('1', NULL, 0, '/home', '无子的爷爷', NULL, 0, 0, 0, '2025-06-23 06:08:00', '2025-06-26 08:17:15', NULL, NULL, 2, NULL, 0);
-INSERT INTO `sys_permission` VALUES ('2', NULL, 0, NULL, '有子有孙的爷爷', NULL, 2, 0, 0, '2025-06-23 06:08:00', '2025-06-26 08:35:43', NULL, NULL, 1, NULL, 0);
+INSERT INTO `sys_permission` VALUES ('1', NULL, 0, '/home', '首页', 'home', 0, 0, 0, '2025-06-23 06:08:00', '2025-06-27 05:42:24', NULL, NULL, 2, NULL, 0);
+INSERT INTO `sys_permission` VALUES ('2', NULL, 2, NULL, '有子有孙的爷爷', NULL, 2, 0, 0, '2025-06-23 06:08:00', '2025-06-27 01:49:18', NULL, NULL, 1, NULL, 0);
 INSERT INTO `sys_permission` VALUES ('3', '2', 0, '/xxx', '无子的爸爸', NULL, 1, 0, 0, '2025-06-23 06:08:00', '2025-06-26 08:17:39', NULL, NULL, 2, NULL, 0);
 INSERT INTO `sys_permission` VALUES ('4', '2', 0, NULL, '有子的爸爸', NULL, 2, 0, 0, '2025-06-23 06:08:00', '2025-06-26 08:17:56', NULL, NULL, 2, NULL, 0);
 INSERT INTO `sys_permission` VALUES ('5', '4', 0, '/aaa', '孙子', NULL, 1, 0, 0, '2025-06-23 06:08:00', '2025-06-26 08:18:00', NULL, NULL, 3, NULL, 0);
-INSERT INTO `sys_permission` VALUES ('6', NULL, 0, NULL, '有子无孙的爷爷', NULL, 1, 0, 0, '2025-06-23 06:08:00', '2025-06-26 08:35:43', NULL, NULL, 2, NULL, 0);
-INSERT INTO `sys_permission` VALUES ('7', '6', 0, '/b', '孙子', NULL, 1, 0, 0, '2025-06-23 06:08:00', '2025-06-26 08:18:00', NULL, NULL, 3, NULL, 0);
+INSERT INTO `sys_permission` VALUES ('6', NULL, 0, NULL, '系统管理', 'system-setting', 1, 0, 0, '2025-06-23 06:08:00', '2025-06-27 05:44:43', NULL, NULL, 2, NULL, 0);
+INSERT INTO `sys_permission` VALUES ('7', '6', 0, '/permission', '菜单权限', 'menu', 1, 0, 0, '2025-06-23 06:08:00', '2025-06-27 05:49:59', NULL, NULL, 3, NULL, 0);
 
 -- ----------------------------
 -- Table structure for sys_role
