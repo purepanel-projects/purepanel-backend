@@ -43,4 +43,11 @@ public class SysPermissionController {
     public Res<GetUserPermissionRes> getLoginUserPermission(@RequestAttribute("loginUserId") String loginUserId) {
         return Res.success(sysPermissionService.getUserPermission(loginUserId));
     }
+
+    @PostMapping("/addOrUpdate")
+    @Operation(summary = "保存菜单权限定义")
+    public Res<?> addOrUpdate(@RequestBody SysPermission sysPermission) {
+        sysPermissionService.addOrUpdate(sysPermission);
+        return Res.success();
+    }
 }

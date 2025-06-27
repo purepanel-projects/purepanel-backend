@@ -19,4 +19,12 @@ public interface SysPermissionService extends IService<SysPermission> {
      * @return GetUserPermissionRes
      */
     GetUserPermissionRes getUserPermission(String userId);
+
+
+    /**
+     * 保存菜单权限定义
+     *
+     * @param sysPermission 菜单权限信息
+     */
+    void addOrUpdate(SysPermission sysPermission);
 }

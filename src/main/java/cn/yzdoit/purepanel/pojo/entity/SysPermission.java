@@ -32,10 +32,10 @@ public class SysPermission extends BaseEntity {
     private String pid;
 
     /**
-     * 菜单类型 0菜单 1按钮
+     * 菜单类型 0菜单 1按钮 2菜单组
      */
     @TableField(value = "type")
-    @Schema(description = "菜单类型 0菜单 1按钮")
+    @Schema(description = "菜单类型 0菜单 1按钮 2菜单组")
     private Integer type;
 
     /**

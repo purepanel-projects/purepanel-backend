@@ -1,6 +1,7 @@
 package cn.yzdoit.purepanel.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.yzdoit.purepanel.mapper.SysPermissionMapper;
 import cn.yzdoit.purepanel.mapper.SysRolePermissionMapper;
 import cn.yzdoit.purepanel.mapper.SysUserRoleMapper;
@@ -16,6 +17,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -66,7 +68,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         }
         //处理菜单信息
         List<SysPermission> menuList = permissionList.stream()
-                .filter(p -> Objects.equals(p.getType(), 0)).toList();
+                .filter(p -> Arrays.asList(0, 2).contains(p.getType())).toList();
         List<SysPermissionTreeListRes> menuTree = TreeListUtils.toTree(menuList, SysPermission::getId, SysPermission::getPid
                 , SysPermissionTreeListRes::setChildren, SysPermissionTreeListRes.class);
         //处理按钮信息
@@ -77,5 +79,37 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
                 .menuTree(menuTree)
                 .btnList(btnList)
                 .build();
+    }
+
+    /**
+     * 保存菜单权限定义
+     *
+     * @param sysPermission 菜单权限信息
+     */
+    @Override
+    public void addOrUpdate(SysPermission sysPermission) {
+        setMenuLevel(sysPermission);
+        String id = sysPermission.getId();
+        if (StrUtil.isBlank(id)) {
+            //新增
+            sysPermissionMapper.insert(sysPermission);
+        } else {
+            sysPermissionMapper.updateById(sysPermission);
+        }
+    }
+
+    /**
+     * 计算并设置菜单层级
+     *
+     * @param sysPermission 菜单权限信息
+     */
+    private void setMenuLevel(SysPermission sysPermission) {
+        if (StrUtil.isBlank(sysPermission.getPid())
+                && sysPermission.getType() == 0) {
+            sysPermission.setMenuLevel(2);
+        } else {
+            SysPermission parentSysPermission = sysPermissionMapper.selectById(sysPermission.getPid());
+            sysPermission.setMenuLevel(parentSysPermission.getMenuLevel() + 1);
+        }
     }
 }
