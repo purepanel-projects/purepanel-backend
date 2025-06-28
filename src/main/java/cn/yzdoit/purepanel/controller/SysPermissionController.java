@@ -29,7 +29,7 @@ public class SysPermissionController {
 
     private final SysPermissionService sysPermissionService;
 
-    @GetMapping("/treeList")
+    @GetMapping("/allTreeList")
     @Operation(summary = "获取树形列表")
     public Res<List<SysPermissionTreeListRes>> allTreeList() {
         List<SysPermission> list = sysPermissionService.list();
@@ -48,6 +48,12 @@ public class SysPermissionController {
     @Operation(summary = "保存菜单权限定义")
     public Res<?> addOrUpdate(@RequestBody SysPermission sysPermission) {
         sysPermissionService.addOrUpdate(sysPermission);
+        return Res.success();
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public Res<?> delete(@PathVariable String id) {
+        sysPermissionService.removeById(id);
         return Res.success();
     }
 }

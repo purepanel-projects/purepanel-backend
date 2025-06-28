@@ -107,6 +107,9 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         if (StrUtil.isBlank(sysPermission.getPid())
                 && sysPermission.getType() == 0) {
             sysPermission.setMenuLevel(2);
+        } else if (StrUtil.isBlank(sysPermission.getPid())
+                && sysPermission.getType() == 2) {
+            sysPermission.setMenuLevel(1);
         } else {
             SysPermission parentSysPermission = sysPermissionMapper.selectById(sysPermission.getPid());
             sysPermission.setMenuLevel(parentSysPermission.getMenuLevel() + 1);

@@ -71,14 +71,14 @@ public class SysPermission extends BaseEntity {
      */
     @TableField(value = "is_hidden")
     @Schema(description = "是否隐藏 0否1是")
-    private Integer isHidden;
+    private Boolean isHidden;
 
     /**
      * 默认展开 0否1是
      */
     @TableField(value = "expanded")
     @Schema(description = "默认展开 0否1是")
-    private Integer expanded;
+    private Boolean expanded;
 
     /**
      * 菜单层级
