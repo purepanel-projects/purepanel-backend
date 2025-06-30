@@ -3,15 +3,14 @@ package cn.yzdoit.purepanel.controller;
 import cn.yzdoit.purepanel.pojo.entity.SysPermission;
 import cn.yzdoit.purepanel.pojo.res.GetUserPermissionRes;
 import cn.yzdoit.purepanel.pojo.res.Res;
-import cn.yzdoit.purepanel.pojo.res.SysPermissionTreeListRes;
 import cn.yzdoit.purepanel.service.SysPermissionService;
-import cn.yzdoit.purepanel.utils.TreeListUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -31,11 +30,10 @@ public class SysPermissionController {
 
     @GetMapping("/allTreeList")
     @Operation(summary = "获取树形列表")
-    public Res<List<SysPermissionTreeListRes>> allTreeList() {
-        List<SysPermission> list = sysPermissionService.list();
-        List<SysPermissionTreeListRes> tree = TreeListUtils.toTree(list, SysPermission::getId, SysPermission::getPid
-                , SysPermissionTreeListRes::setChildren, SysPermissionTreeListRes.class);
-        return Res.success(tree);
+    public Res<List<?>> allTreeList(@RequestParam(required = false) String title
+            , @RequestParam(required = false) String path
+            , @RequestParam(required = false) Integer type) {
+        return Res.success(sysPermissionService.allTreeList(title, path, type));
     }
 
     @GetMapping("/getLoginUserPermission")
@@ -52,8 +50,9 @@ public class SysPermissionController {
     }
 
     @DeleteMapping("/delete/{id}")
+    @Operation(summary = "删除菜单权限定义")
     public Res<?> delete(@PathVariable String id) {
-        sysPermissionService.removeById(id);
+        sysPermissionService.recurDelete(Collections.singletonList(id));
         return Res.success();
     }
 }

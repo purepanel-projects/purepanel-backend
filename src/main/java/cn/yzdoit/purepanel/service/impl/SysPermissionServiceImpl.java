@@ -36,6 +36,30 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     private final SysPermissionMapper sysPermissionMapper;
 
     /**
+     * 获取树形列表
+     *
+     * @param title 标题
+     * @param path  路径
+     * @param type  类型
+     * @return list
+     */
+    @Override
+    public List<?> allTreeList(String title, String path, Integer type) {
+        List<SysPermission> list = sysPermissionMapper.selectList(Wrappers.<SysPermission>lambdaQuery()
+                .like(StrUtil.isNotBlank(title), SysPermission::getTitle, title)
+                .like(StrUtil.isNotBlank(path), SysPermission::getPath, path)
+                .eq(type != null, SysPermission::getType, type)
+                .orderByAsc(SysPermission::getOrderNo));
+        //有查询条件，平铺返回
+        if (StrUtil.isNotBlank(title) || StrUtil.isNotBlank(path) || type != null) {
+            return list;
+        }
+        //没有查询条件，返回树形结构
+        return TreeListUtils.toTree(list, SysPermission::getId, SysPermission::getPid
+                , SysPermissionTreeListRes::setChildren, SysPermissionTreeListRes.class);
+    }
+
+    /**
      * 获取用户权限
      *
      * @param userId 用户id
@@ -62,6 +86,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         //获取权限信息
         List<SysPermission> permissionList = sysPermissionMapper.selectList(Wrappers.<SysPermission>lambdaQuery()
                 .in(SysPermission::getId, permissionIdList)
+                .eq(SysPermission::getIsHidden, false)
                 .orderByAsc(SysPermission::getOrderNo));
         if (CollectionUtil.isEmpty(permissionList)) {
             return GetUserPermissionRes.empty();
@@ -95,6 +120,24 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
             sysPermissionMapper.insert(sysPermission);
         } else {
             sysPermissionMapper.updateById(sysPermission);
+        }
+    }
+
+    /**
+     * 递归删除
+     *
+     * @param idList 权限ID
+     */
+    @Override
+    public void recurDelete(List<String> idList) {
+        sysPermissionMapper.deleteByIds(idList);
+        sysRolePermissionMapper.delete(Wrappers.<SysRolePermission>lambdaQuery()
+                .in(SysRolePermission::getPermissionId, idList));
+        //递归删除子节点
+        List<SysPermission> subSysPermissionList = sysPermissionMapper.selectList(Wrappers.<SysPermission>lambdaQuery()
+                .in(SysPermission::getPid, idList));
+        if (CollectionUtil.isNotEmpty(subSysPermissionList)) {
+            this.recurDelete(subSysPermissionList.stream().map(SysPermission::getId).toList());
         }
     }
 
