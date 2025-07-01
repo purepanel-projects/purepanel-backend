@@ -10,7 +10,7 @@
     </parent>
     <groupId>cn.yzdoit</groupId>
     <artifactId>purepanel-backend</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>purepanel-backend</name>
     <description>purepanel-backend</description>
     <url/>

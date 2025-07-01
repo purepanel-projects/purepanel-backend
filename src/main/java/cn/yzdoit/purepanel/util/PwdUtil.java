@@ -1,4 +1,4 @@
-package cn.yzdoit.purepanel.utils;
+package cn.yzdoit.purepanel.util;
 
 
 import cn.hutool.core.util.RandomUtil;
@@ -12,7 +12,7 @@ import cn.yzdoit.purepanel.pojo.bo.TwoParams;
  * @author 闫政
  * @since 2025/6/23 18:27 周一
  */
-public class PwdUtils {
+public class PwdUtil {
 
     /**
      * md5编码

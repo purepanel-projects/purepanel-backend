@@ -11,7 +11,7 @@ import cn.yzdoit.purepanel.pojo.entity.SysUserRole;
 import cn.yzdoit.purepanel.pojo.res.GetUserPermissionRes;
 import cn.yzdoit.purepanel.pojo.res.SysPermissionTreeListRes;
 import cn.yzdoit.purepanel.service.SysPermissionService;
-import cn.yzdoit.purepanel.utils.TreeListUtils;
+import cn.yzdoit.purepanel.util.TreeListUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -55,7 +55,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
             return list;
         }
         //没有查询条件，返回树形结构
-        return TreeListUtils.toTree(list, SysPermission::getId, SysPermission::getPid
+        return TreeListUtil.toTree(list, SysPermission::getId, SysPermission::getPid
                 , SysPermissionTreeListRes::setChildren, SysPermissionTreeListRes.class);
     }
 
@@ -94,7 +94,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         //处理菜单信息
         List<SysPermission> menuList = permissionList.stream()
                 .filter(p -> Arrays.asList(0, 2).contains(p.getType())).toList();
-        List<SysPermissionTreeListRes> menuTree = TreeListUtils.toTree(menuList, SysPermission::getId, SysPermission::getPid
+        List<SysPermissionTreeListRes> menuTree = TreeListUtil.toTree(menuList, SysPermission::getId, SysPermission::getPid
                 , SysPermissionTreeListRes::setChildren, SysPermissionTreeListRes.class);
         //处理按钮信息
         List<SysPermission> btnList = permissionList.stream()

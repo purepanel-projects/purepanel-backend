@@ -1,4 +1,4 @@
-package cn.yzdoit.purepanel.utils;
+package cn.yzdoit.purepanel.util;
 
 
 import cn.hutool.core.util.ObjectUtil;
@@ -11,7 +11,7 @@ import cn.yzdoit.purepanel.exception.BusinessException;
  * @author 闫政
  * @since 2025/6/23 19:40 周一
  */
-public class CheckUtils {
+public class CheckUtil {
 
     public static void equals(String textA, String textB, String msg) {
         check(!StrUtil.equals(textA, textB), msg);

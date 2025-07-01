@@ -10,8 +10,8 @@ import cn.yzdoit.purepanel.pojo.req.AccountLoginReq;
 import cn.yzdoit.purepanel.pojo.res.AccountLoginRes;
 import cn.yzdoit.purepanel.pojo.res.GetCaptchaRes;
 import cn.yzdoit.purepanel.service.LoginService;
-import cn.yzdoit.purepanel.utils.CheckUtils;
-import cn.yzdoit.purepanel.utils.PwdUtils;
+import cn.yzdoit.purepanel.util.CheckUtil;
+import cn.yzdoit.purepanel.util.PwdUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.wf.captcha.SpecCaptcha;
 import lombok.RequiredArgsConstructor;
@@ -60,15 +60,15 @@ public class LoginServiceImpl implements LoginService {
     public AccountLoginRes accountLogin(AccountLoginReq req) {
         //前置校验
         String captchaCache = redisTemplate.opsForValue().get(RedisPrefix.SYS_CAPTCHA + req.getCaptchaKey());
-        CheckUtils.notBlank(captchaCache, "验证码已过期，请点击验证码重新获取");
-        CheckUtils.equalsIgnoreCase(captchaCache, req.getCaptcha(), "验证码错误");
+        CheckUtil.notBlank(captchaCache, "验证码已过期，请点击验证码重新获取");
+        CheckUtil.equalsIgnoreCase(captchaCache, req.getCaptcha(), "验证码错误");
         SysUser sysUser = sysUserMapper.selectOne(Wrappers.<SysUser>lambdaQuery()
                 .select(SysUser::getId, SysUser::getName, SysUser::getAccount, SysUser::getAvatar
                         , SysUser::getStatus, SysUser::getSalt, SysUser::getPwd)
                 .eq(SysUser::getAccount, req.getAccount()));
-        CheckUtils.notNull(sysUser, "账号或密码错误");
-        CheckUtils.check(sysUser.getStatus() == 1, "该账号已被禁用");
-        CheckUtils.check(PwdUtils.verify(req.getPwd(), sysUser.getSalt(), sysUser.getPwd()), "账号或密码错误");
+        CheckUtil.notNull(sysUser, "账号或密码错误");
+        CheckUtil.check(sysUser.getStatus() == 1, "该账号已被禁用");
+        CheckUtil.check(PwdUtil.verify(req.getPwd(), sysUser.getSalt(), sysUser.getPwd()), "账号或密码错误");
         //移除非必要字段
         sysUser.setPwd(null);
         sysUser.setSalt(null);

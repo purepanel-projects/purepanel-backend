@@ -1,4 +1,4 @@
-package cn.yzdoit.purepanel.utils;
+package cn.yzdoit.purepanel.util;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.BeanUtils;
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  * @author 闫政
  * @since 2025-06-17 17:06
  */
-public class TreeListUtils {
+public class TreeListUtil {
 
     /**
      * 将list转换为树形列表
