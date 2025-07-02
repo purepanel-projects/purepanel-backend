@@ -38,7 +38,7 @@ public class SysPermissionController {
 
     @GetMapping("/getLoginUserPermission")
     @Operation(summary = "获取登录用户的权限")
-    public Res<GetUserPermissionRes> getLoginUserPermission(@RequestAttribute("loginUserId") String loginUserId) {
+    public Res<GetUserPermissionRes> getLoginUserPermission(@RequestAttribute String loginUserId) {
         return Res.success(sysPermissionService.getUserPermission(loginUserId));
     }
 

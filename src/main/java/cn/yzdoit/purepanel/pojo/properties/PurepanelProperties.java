@@ -35,6 +35,6 @@ public class PurepanelProperties {
         /**
          * 登录过期时间 单位小时
          */
-        private Integer loginStatusExpireTime = 12;
+        private Integer loginStatusExpireTime = 24 * 5;
     }
 }
