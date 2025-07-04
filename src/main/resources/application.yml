@@ -18,15 +18,11 @@ spring:
       port: 6379
 
 mybatis-plus:
-  mapper-locations: classpath*:cn/yzdoit/purepanel/mapper/**/xml/*Mapper.xml
+  mapper-locations: classpath*:cn/yzdoit/purepanel/mapper/xml/*Mapper.xml
   global-config:
     banner: false
   configuration:
     log-impl: cn.yzdoit.purepanel.log.MyBatisLogImpl
-
-springdoc:
-  swagger-ui:
-    path: /swagger
 
 purepanel:
   res-exception-enabled: true

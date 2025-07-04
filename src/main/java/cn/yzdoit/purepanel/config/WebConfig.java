@@ -25,6 +25,8 @@ public class WebConfig implements WebMvcConfigurer {
                 //拦截的路径
                 .addPathPatterns("/**")
                 //排除的路径
-                .excludePathPatterns("/login/**");
+                .excludePathPatterns("/login/**"
+                        , "/swagger-ui/**"
+                        , "/v3/api-docs/**");
     }
 }

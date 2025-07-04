@@ -1,12 +1,17 @@
 package cn.yzdoit.purepanel.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import cn.yzdoit.purepanel.mapper.SysUserMapper;
 import cn.yzdoit.purepanel.pojo.bo.TwoParams;
 import cn.yzdoit.purepanel.pojo.entity.SysUser;
 import cn.yzdoit.purepanel.pojo.req.ChangePwdReq;
+import cn.yzdoit.purepanel.pojo.req.UserPageListReq;
+import cn.yzdoit.purepanel.pojo.res.UserPageListRes;
 import cn.yzdoit.purepanel.service.SysUserService;
 import cn.yzdoit.purepanel.util.CheckUtil;
 import cn.yzdoit.purepanel.util.PwdUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -41,5 +46,36 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         sysUser.setPwd(pwdParams.getA());
         sysUser.setSalt(pwdParams.getB());
         sysUserMapper.updateById(sysUser);
+    }
+
+    /**
+     * 新增或修改用户信息
+     *
+     * @param sysUser 用户信息
+     */
+    @Override
+    public void addOrUpdate(SysUser sysUser) {
+        if (StrUtil.isBlank(sysUser.getId())) {
+            //新增
+            TwoParams<String, String> pwdParams = PwdUtil.encode(sysUser.getPwd());
+            sysUser.setPwd(pwdParams.getA());
+            sysUser.setSalt(pwdParams.getB());
+            sysUserMapper.insert(sysUser);
+        } else {
+            //修改
+            sysUserMapper.updateById(sysUser);
+        }
+    }
+
+    /**
+     * 分页查询用户信息
+     *
+     * @param req 分页查询用户信息请求参数
+     * @return 用户信息分页
+     */
+    @Override
+    public IPage<UserPageListRes> pageList(UserPageListReq req) {
+        IPage<UserPageListRes> page = new Page<>(req.getCurrent(), req.getSize());
+        return sysUserMapper.pageList(page, req);
     }
 }

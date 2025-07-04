@@ -2,11 +2,14 @@ package cn.yzdoit.purepanel.controller;
 
 import cn.yzdoit.purepanel.pojo.entity.SysUser;
 import cn.yzdoit.purepanel.pojo.req.ChangePwdReq;
+import cn.yzdoit.purepanel.pojo.req.UserPageListReq;
 import cn.yzdoit.purepanel.pojo.res.Res;
+import cn.yzdoit.purepanel.pojo.res.UserPageListRes;
 import cn.yzdoit.purepanel.service.SysUserService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -24,9 +27,16 @@ public class SysUserController {
 
 
     @PostMapping("/pageList")
-    public Res<IPage<SysUser>> pageList() {
+    @Operation(summary = "分页查询用户信息")
+    public Res<IPage<UserPageListRes>> pageList(@RequestBody @Validated UserPageListReq req) {
+        return Res.success(sysUserService.pageList(req));
+    }
 
-        return null;
+    @PostMapping("/addOrUpdate")
+    @Operation(summary = "保存用户信息")
+    public Res<?> addOrUpdate(@RequestBody SysUser sysUser) {
+        sysUserService.addOrUpdate(sysUser);
+        return Res.success();
     }
 
     @PostMapping("/changeSelfPwd")

@@ -2,6 +2,9 @@ package cn.yzdoit.purepanel.service;
 
 import cn.yzdoit.purepanel.pojo.entity.SysUser;
 import cn.yzdoit.purepanel.pojo.req.ChangePwdReq;
+import cn.yzdoit.purepanel.pojo.req.UserPageListReq;
+import cn.yzdoit.purepanel.pojo.res.UserPageListRes;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -18,4 +21,21 @@ public interface SysUserService extends IService<SysUser> {
      * @param req 修改密码请求
      */
     void changePwd(ChangePwdReq req);
+
+
+    /**
+     * 新增或修改用户信息
+     *
+     * @param sysUser 用户信息
+     */
+    void addOrUpdate(SysUser sysUser);
+
+
+    /**
+     * 分页查询用户信息
+     *
+     * @param req 分页查询用户信息请求参数
+     * @return 用户信息分页
+     */
+    IPage<UserPageListRes> pageList(UserPageListReq req);
 }
