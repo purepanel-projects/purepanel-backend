@@ -11,7 +11,7 @@
  Target Server Version : 90300 (9.3.0)
  File Encoding         : 65001
 
- Date: 27/06/2025 09:01:47
+ Date: 05/07/2025 17:31:37
 */
 
 SET NAMES utf8mb4;
@@ -21,120 +21,128 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- Table structure for sys_permission
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_permission`;
-CREATE TABLE `sys_permission`  (
+CREATE TABLE `sys_permission` (
   `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '主键',
-  `pid` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '父级id',
+  `pid` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '父级id',
   `type` tinyint NOT NULL COMMENT '菜单类型 0菜单 1按钮 2菜单组',
-  `path` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '访问路径',
+  `path` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '访问路径',
   `title` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '标题',
-  `icon` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '图标',
-  `order_no` int NOT NULL DEFAULT 0 COMMENT '菜单展示顺序',
-  `is_hidden` tinyint NOT NULL DEFAULT 0 COMMENT '是否隐藏 0否1是',
-  `expanded` tinyint NOT NULL DEFAULT 0 COMMENT '默认展开 0否1是',
+  `icon` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '图标',
+  `order_no` int NOT NULL DEFAULT '0' COMMENT '菜单展示顺序',
+  `is_hidden` tinyint NOT NULL DEFAULT '0' COMMENT '是否隐藏 0否1是',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  `create_by_user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '创建人',
-  `update_by_user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '更新人',
+  `update_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `create_by_user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '创建人',
+  `update_by_user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '更新人',
   `menu_level` int NOT NULL COMMENT '菜单层级',
-  `auth_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '授权编码',
-  `version` int NOT NULL DEFAULT 0 COMMENT '数据版本',
+  `auth_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '授权编码',
+  `version` int NOT NULL DEFAULT '0' COMMENT '数据版本',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '权限定义表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='权限定义表';
 
 -- ----------------------------
 -- Records of sys_permission
 -- ----------------------------
-INSERT INTO `sys_permission` VALUES ('1', NULL, 0, '/home', '首页', 'home', 0, 0, 0, '2025-06-23 06:08:00', '2025-06-27 05:42:24', NULL, NULL, 2, NULL, 0);
-INSERT INTO `sys_permission` VALUES ('2', NULL, 2, NULL, '有子有孙的爷爷', NULL, 2, 0, 0, '2025-06-23 06:08:00', '2025-06-27 01:49:18', NULL, NULL, 1, NULL, 0);
-INSERT INTO `sys_permission` VALUES ('3', '2', 0, '/xxx', '无子的爸爸', NULL, 1, 0, 0, '2025-06-23 06:08:00', '2025-06-26 08:17:39', NULL, NULL, 2, NULL, 0);
-INSERT INTO `sys_permission` VALUES ('4', '2', 0, NULL, '有子的爸爸', NULL, 2, 0, 0, '2025-06-23 06:08:00', '2025-06-26 08:17:56', NULL, NULL, 2, NULL, 0);
-INSERT INTO `sys_permission` VALUES ('5', '4', 0, '/aaa', '孙子', NULL, 1, 0, 0, '2025-06-23 06:08:00', '2025-06-26 08:18:00', NULL, NULL, 3, NULL, 0);
-INSERT INTO `sys_permission` VALUES ('6', NULL, 0, NULL, '系统管理', 'system-setting', 1, 0, 0, '2025-06-23 06:08:00', '2025-06-27 05:44:43', NULL, NULL, 2, NULL, 0);
-INSERT INTO `sys_permission` VALUES ('7', '6', 0, '/permission', '菜单权限', 'menu', 1, 0, 0, '2025-06-23 06:08:00', '2025-06-27 05:49:59', NULL, NULL, 3, NULL, 0);
+BEGIN;
+INSERT INTO `sys_permission` (`id`, `pid`, `type`, `path`, `title`, `icon`, `order_no`, `is_hidden`, `create_time`, `update_time`, `create_by_user_id`, `update_by_user_id`, `menu_level`, `auth_code`, `version`) VALUES ('1', NULL, 0, '/home', '首页', 'home', 0, 0, '2025-06-23 06:08:00', '2025-06-27 05:42:24', NULL, NULL, 2, NULL, 0);
+INSERT INTO `sys_permission` (`id`, `pid`, `type`, `path`, `title`, `icon`, `order_no`, `is_hidden`, `create_time`, `update_time`, `create_by_user_id`, `update_by_user_id`, `menu_level`, `auth_code`, `version`) VALUES ('1941127559303680001', '6', 0, '/user', '用户管理', 'user-setting', 2, 0, '2025-07-04 13:30:49', '2025-07-04 15:33:20', NULL, NULL, 3, NULL, 5);
+INSERT INTO `sys_permission` (`id`, `pid`, `type`, `path`, `title`, `icon`, `order_no`, `is_hidden`, `create_time`, `update_time`, `create_by_user_id`, `update_by_user_id`, `menu_level`, `auth_code`, `version`) VALUES ('6', NULL, 0, '', '系统管理', 'system-setting', 1, 0, '2025-06-23 06:08:00', '2025-06-28 17:49:12', NULL, NULL, 2, NULL, 0);
+INSERT INTO `sys_permission` (`id`, `pid`, `type`, `path`, `title`, `icon`, `order_no`, `is_hidden`, `create_time`, `update_time`, `create_by_user_id`, `update_by_user_id`, `menu_level`, `auth_code`, `version`) VALUES ('7', '6', 0, '/permission', '菜单权限', 'view-list', 1, 0, '2025-06-23 06:08:00', '2025-07-01 10:29:22', NULL, NULL, 3, NULL, 1);
+COMMIT;
 
 -- ----------------------------
 -- Table structure for sys_role
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role`;
-CREATE TABLE `sys_role`  (
+CREATE TABLE `sys_role` (
   `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '主键',
   `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '名称',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  `create_by_user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '创建人',
-  `update_by_user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '更新人',
-  `version` int NOT NULL DEFAULT 0 COMMENT '数据版本',
+  `update_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `create_by_user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '创建人',
+  `update_by_user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '更新人',
+  `version` int NOT NULL DEFAULT '0' COMMENT '数据版本',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色定义表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='角色定义表';
 
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
-INSERT INTO `sys_role` VALUES ('1', 'ROOT', '2025-06-26 05:14:19', NULL, NULL, NULL, 0);
+BEGIN;
+INSERT INTO `sys_role` (`id`, `name`, `create_time`, `update_time`, `create_by_user_id`, `update_by_user_id`, `version`) VALUES ('1', 'ROOT', '2025-06-26 05:14:19', NULL, NULL, NULL, 0);
+COMMIT;
 
 -- ----------------------------
 -- Table structure for sys_role_permission
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role_permission`;
-CREATE TABLE `sys_role_permission`  (
+CREATE TABLE `sys_role_permission` (
   `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '主键',
   `role_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '角色 ID',
   `permission_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '权限 ID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色权限关联表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='角色权限关联表';
 
 -- ----------------------------
 -- Records of sys_role_permission
 -- ----------------------------
-INSERT INTO `sys_role_permission` VALUES ('1', '1', '1');
-INSERT INTO `sys_role_permission` VALUES ('2', '1', '2');
-INSERT INTO `sys_role_permission` VALUES ('3', '1', '3');
-INSERT INTO `sys_role_permission` VALUES ('4', '1', '4');
-INSERT INTO `sys_role_permission` VALUES ('5', '1', '5');
-INSERT INTO `sys_role_permission` VALUES ('6', '1', '6');
-INSERT INTO `sys_role_permission` VALUES ('7', '1', '7');
+BEGIN;
+INSERT INTO `sys_role_permission` (`id`, `role_id`, `permission_id`) VALUES ('1', '1', '1');
+INSERT INTO `sys_role_permission` (`id`, `role_id`, `permission_id`) VALUES ('2', '1', '2');
+INSERT INTO `sys_role_permission` (`id`, `role_id`, `permission_id`) VALUES ('3', '1', '3');
+INSERT INTO `sys_role_permission` (`id`, `role_id`, `permission_id`) VALUES ('4', '1', '4');
+INSERT INTO `sys_role_permission` (`id`, `role_id`, `permission_id`) VALUES ('5', '1', '5');
+INSERT INTO `sys_role_permission` (`id`, `role_id`, `permission_id`) VALUES ('6', '1', '6');
+INSERT INTO `sys_role_permission` (`id`, `role_id`, `permission_id`) VALUES ('7', '1', '7');
+INSERT INTO `sys_role_permission` (`id`, `role_id`, `permission_id`) VALUES ('8', '1', '1941127559303680001');
+COMMIT;
 
 -- ----------------------------
 -- Table structure for sys_user
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user`;
-CREATE TABLE `sys_user`  (
+CREATE TABLE `sys_user` (
   `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '主键',
   `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '名称',
   `account` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '账号 全局唯一',
   `pwd` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '密码',
   `salt` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '密码盐',
-  `avatar` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '头像',
-  `status` tinyint NOT NULL DEFAULT 1 COMMENT '状态 0禁用 1启用',
-  `email` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '邮箱',
-  `phone_number` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '手机号',
+  `avatar` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '头像',
+  `status` tinyint NOT NULL DEFAULT '1' COMMENT '状态 0禁用 1启用',
+  `email` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '邮箱',
+  `phone_number` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '手机号',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  `create_by_user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '创建人',
-  `update_by_user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '更新人',
-  `version` int NOT NULL DEFAULT 0 COMMENT '数据版本',
+  `update_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `create_by_user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '创建人',
+  `update_by_user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '更新人',
+  `version` int NOT NULL DEFAULT '0' COMMENT '数据版本',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户信息表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='用户信息表';
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('1', '蓝芷云', 'zhiyun', '9d06ed49650197788d516d7aea45d6cf', '12345678', NULL, 1, NULL, NULL, '2025-06-24 02:32:44', '2025-06-24 02:32:52', '1', NULL, 0);
+BEGIN;
+INSERT INTO `sys_user` (`id`, `name`, `account`, `pwd`, `salt`, `avatar`, `status`, `email`, `phone_number`, `create_time`, `update_time`, `create_by_user_id`, `update_by_user_id`, `version`) VALUES ('1', '蓝芷云', 'zhiyun', 'f72de1407dfe741d8499586d18e96dd9', 'ge67E5pX', NULL, 1, 'zyan1226@163.com', '13196302921', '2025-06-24 02:32:44', '2025-07-05 05:00:54', '1', NULL, 10);
+INSERT INTO `sys_user` (`id`, `name`, `account`, `pwd`, `salt`, `avatar`, `status`, `email`, `phone_number`, `create_time`, `update_time`, `create_by_user_id`, `update_by_user_id`, `version`) VALUES ('2', '吴达', 'wuda', 'f72de1407dfe741d8499586d18e96dd9', 'ge67E5pX', NULL, 1, NULL, NULL, '2025-07-05 05:01:23', '2025-07-05 05:07:27', NULL, NULL, 0);
+COMMIT;
 
 -- ----------------------------
 -- Table structure for sys_user_role
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user_role`;
-CREATE TABLE `sys_user_role`  (
+CREATE TABLE `sys_user_role` (
   `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '主键',
   `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '用户 ID',
   `role_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '角色 ID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户角色关联表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='用户角色关联表';
 
 -- ----------------------------
 -- Records of sys_user_role
 -- ----------------------------
-INSERT INTO `sys_user_role` VALUES ('1', '1', '1');
+BEGIN;
+INSERT INTO `sys_user_role` (`id`, `user_id`, `role_id`) VALUES ('1', '1', '1');
+COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;

@@ -30,7 +30,7 @@ public enum ApiStatusEnum {
     /**
      * 失败
      */
-    FAIL(500, "处理失败");
+    FAIL(500, "服务繁忙，请稍后再试");
 
     /**
      * 状态码
