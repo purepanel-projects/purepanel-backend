@@ -1,8 +1,8 @@
 package cn.yzdoit.purepanel.pojo.res;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -14,7 +14,7 @@ import java.io.Serializable;
  * @since 2025/6/23 07:04 星期一
  */
 @Data
-@Builder
+@SuperBuilder
 @Schema(description = "获取验证码接口响应参数")
 public class GetCaptchaRes implements Serializable {
     @Serial

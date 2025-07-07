@@ -3,7 +3,11 @@ package cn.yzdoit.purepanel.pojo.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.io.Serial;
 
@@ -15,7 +19,7 @@ import java.io.Serial;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 @TableName(value = "sys_user")
 @Schema(description = "用户信息表")
 @EqualsAndHashCode(callSuper = true)

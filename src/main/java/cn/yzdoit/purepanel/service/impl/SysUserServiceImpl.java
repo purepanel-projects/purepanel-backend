@@ -43,12 +43,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         }
         //设置新密码
         TwoParams<String, String> pwdParams = PwdUtil.encode(req.getNewPwd());
-        SysUser newUser = SysUser.builder()
+        sysUserMapper.updateById(SysUser.builder()
+                .id(sysUser.getId())
                 .pwd(pwdParams.getA())
                 .salt(pwdParams.getB())
-                .build();
-        newUser.setId(sysUser.getId());
-        sysUserMapper.updateById(newUser);
+                .build());
     }
 
     /**

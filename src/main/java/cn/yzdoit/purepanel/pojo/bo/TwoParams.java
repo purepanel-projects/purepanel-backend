@@ -1,8 +1,8 @@
 package cn.yzdoit.purepanel.pojo.bo;
 
 
-import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
 /**
  * 双参数
@@ -11,7 +11,7 @@ import lombok.Data;
  * @since 2025/6/23 19:11 周一
  */
 @Data
-@Builder
+@SuperBuilder
 public class TwoParams<A, B> {
 
     private A a;

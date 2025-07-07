@@ -2,8 +2,8 @@ package cn.yzdoit.purepanel.pojo.res;
 
 import cn.yzdoit.purepanel.pojo.entity.SysUser;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -15,7 +15,7 @@ import java.io.Serializable;
  * @since 2025/6/23 08:57 星期一
  */
 @Data
-@Builder
+@SuperBuilder
 @Schema(description = "账号登录接口响应参数")
 public class AccountLoginRes implements Serializable {
 
