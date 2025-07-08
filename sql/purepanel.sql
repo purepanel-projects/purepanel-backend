@@ -11,7 +11,7 @@
  Target Server Version : 90300 (9.3.0)
  File Encoding         : 65001
 
- Date: 07/07/2025 05:49:52
+ Date: 08/07/2025 07:10:34
 */
 
 SET NAMES utf8mb4;
@@ -37,9 +37,9 @@ CREATE TABLE `sys_group`  (
 -- ----------------------------
 -- Records of sys_group
 -- ----------------------------
-INSERT INTO `sys_group` VALUES ('1', NULL, 'Mercedes-AMG PETRONAS Formula One Team', 0, '2025-07-07 05:35:12', '2025-07-07 05:38:47', NULL, NULL, 0);
-INSERT INTO `sys_group` VALUES ('2', '1', 'Driver', 0, '2025-07-07 05:40:00', NULL, NULL, NULL, 0);
-INSERT INTO `sys_group` VALUES ('3', '1', 'Aerodynamics', 1, '2025-07-07 05:42:05', NULL, NULL, NULL, 0);
+INSERT INTO `sys_group` VALUES ('1', NULL, '长安科技集团', 0, '2025-07-07 05:35:12', '2025-07-08 14:08:32', NULL, NULL, 0);
+INSERT INTO `sys_group` VALUES ('2', '1', '行政部', 0, '2025-07-07 05:40:00', '2025-07-08 14:08:40', NULL, NULL, 0);
+INSERT INTO `sys_group` VALUES ('3', '1', '市场部', 1, '2025-07-07 05:42:05', '2025-07-08 14:08:47', NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for sys_permission
@@ -69,6 +69,8 @@ CREATE TABLE `sys_permission`  (
 -- ----------------------------
 INSERT INTO `sys_permission` VALUES ('1', NULL, 0, '/home', '首页', 'home', 0, 0, '2025-06-23 06:08:00', '2025-06-27 05:42:24', NULL, NULL, 2, NULL, 0);
 INSERT INTO `sys_permission` VALUES ('1941127559303680001', '6', 0, '/user', '用户管理', 'user-setting', 2, 0, '2025-07-04 13:30:49', '2025-07-04 15:33:20', NULL, NULL, 3, NULL, 5);
+INSERT INTO `sys_permission` VALUES ('1942393667177238530', '6', 0, '/group', '群组管理', 'usergroup', 3, 0, '2025-07-08 09:21:52', NULL, NULL, NULL, 2, NULL, 0);
+INSERT INTO `sys_permission` VALUES ('1942480488057921537', '6', 0, '/role', '角色管理', 'user-marked', 4, 0, '2025-07-08 15:06:52', NULL, NULL, NULL, 2, NULL, 0);
 INSERT INTO `sys_permission` VALUES ('6', NULL, 2, '', '系统管理', 'system-setting', 1, 0, '2025-06-23 06:08:00', '2025-07-07 05:45:12', NULL, NULL, 1, NULL, 1);
 INSERT INTO `sys_permission` VALUES ('7', '6', 0, '/permission', '菜单权限', 'view-list', 1, 0, '2025-06-23 06:08:00', '2025-07-01 10:29:22', NULL, NULL, 3, NULL, 1);
 
@@ -107,6 +109,7 @@ CREATE TABLE `sys_role_permission`  (
 -- Records of sys_role_permission
 -- ----------------------------
 INSERT INTO `sys_role_permission` VALUES ('1', '1', '1');
+INSERT INTO `sys_role_permission` VALUES ('10', '1', '1942480488057921537');
 INSERT INTO `sys_role_permission` VALUES ('2', '1', '2');
 INSERT INTO `sys_role_permission` VALUES ('3', '1', '3');
 INSERT INTO `sys_role_permission` VALUES ('4', '1', '4');
@@ -114,6 +117,7 @@ INSERT INTO `sys_role_permission` VALUES ('5', '1', '5');
 INSERT INTO `sys_role_permission` VALUES ('6', '1', '6');
 INSERT INTO `sys_role_permission` VALUES ('7', '1', '7');
 INSERT INTO `sys_role_permission` VALUES ('8', '1', '1941127559303680001');
+INSERT INTO `sys_role_permission` VALUES ('9', '1', '1942393667177238530');
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -134,7 +138,9 @@ CREATE TABLE `sys_user`  (
   `create_by_user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '创建人',
   `update_by_user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '更新人',
   `version` int NOT NULL DEFAULT 0 COMMENT '数据版本',
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `account_unq`(`account` ASC) USING BTREE COMMENT '账号唯一索引',
+  INDEX `idx`(`name` ASC) USING BTREE COMMENT '查询索引'
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -142,6 +148,22 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 INSERT INTO `sys_user` VALUES ('1', '蓝芷云', 'zhiyun', 'f72de1407dfe741d8499586d18e96dd9', 'ge67E5pX', NULL, 1, 'zyan1226@163.com', '13196302921', '2025-06-24 02:32:44', '2025-07-05 05:00:54', '1', NULL, 10);
 INSERT INTO `sys_user` VALUES ('2', '吴达', 'wuda', 'f72de1407dfe741d8499586d18e96dd9', 'ge67E5pX', NULL, 1, NULL, NULL, '2025-07-05 05:01:23', '2025-07-05 05:07:27', NULL, NULL, 0);
+
+-- ----------------------------
+-- Table structure for sys_user_group
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_user_group`;
+CREATE TABLE `sys_user_group`  (
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '主键',
+  `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '用户ID',
+  `group_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '群组ID',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户群组关联表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sys_user_group
+-- ----------------------------
+INSERT INTO `sys_user_group` VALUES ('1', '1', '2');
 
 -- ----------------------------
 -- Table structure for sys_user_role
