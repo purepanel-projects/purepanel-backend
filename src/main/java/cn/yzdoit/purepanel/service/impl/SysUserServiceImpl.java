@@ -1,7 +1,12 @@
 package cn.yzdoit.purepanel.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.yzdoit.purepanel.mapper.SysUserGroupMapper;
 import cn.yzdoit.purepanel.mapper.SysUserMapper;
+import cn.yzdoit.purepanel.mapper.SysUserRoleMapper;
+import cn.yzdoit.purepanel.pojo.bo.SysUserGroupBo;
+import cn.yzdoit.purepanel.pojo.bo.SysUserRoleBo;
 import cn.yzdoit.purepanel.pojo.bo.TwoParams;
 import cn.yzdoit.purepanel.pojo.entity.SysUser;
 import cn.yzdoit.purepanel.pojo.req.ChangePwdReq;
@@ -16,6 +21,11 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 /**
  * 用户信息相关服务
  *
@@ -27,6 +37,8 @@ import org.springframework.stereotype.Service;
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
 
     private final SysUserMapper sysUserMapper;
+    private final SysUserGroupMapper sysUserGroupMapper;
+    private final SysUserRoleMapper sysUserRoleMapper;
 
     /**
      * 修改密码
@@ -78,6 +90,38 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public IPage<UserPageListRes> pageList(UserPageListReq req) {
         IPage<UserPageListRes> page = new Page<>(req.getCurrent(), req.getSize());
-        return sysUserMapper.pageList(page, req);
+        page = sysUserMapper.pageList(page, req);
+        List<UserPageListRes> records = page.getRecords();
+        if (CollUtil.isEmpty(records)) {
+            return page;
+        }
+        List<String> userIdList = records.stream().map(UserPageListRes::getId).toList();
+        //查询相关部门
+        List<SysUserGroupBo> sysUserGroupBoList = sysUserGroupMapper.listByUserId(userIdList);
+        Map<String, List<SysUserGroupBo>> sysUserGroupBoListByUser = new HashMap<>();
+        if (CollUtil.isNotEmpty(sysUserGroupBoList)) {
+            sysUserGroupBoListByUser = sysUserGroupBoList
+                    .stream().collect(Collectors.groupingBy(SysUserGroupBo::getUserId));
+        }
+        //查询相关角色
+        List<SysUserRoleBo> sysUserRoleBoList = sysUserRoleMapper.listByUserId(userIdList);
+        Map<String, List<SysUserRoleBo>> sysUserRoleBoListByUser = new HashMap<>();
+        if (CollUtil.isNotEmpty(sysUserGroupBoList)) {
+            sysUserRoleBoListByUser = sysUserRoleBoList
+                    .stream().collect(Collectors.groupingBy(SysUserRoleBo::getUserId));
+        }
+        for (UserPageListRes record : records) {
+            List<SysUserGroupBo> thisUserGroupList = sysUserGroupBoListByUser.get(record.getId());
+            if (null != thisUserGroupList) {
+                record.setGroupList(thisUserGroupList);
+                record.setGroupNames(String.join(",", thisUserGroupList.stream().map(SysUserGroupBo::getName).toList()));
+            }
+            List<SysUserRoleBo> thisUserRoleList = sysUserRoleBoListByUser.get(record.getId());
+            if (null != thisUserRoleList) {
+                record.setRoleList(thisUserRoleList);
+                record.setRoleNames(String.join(",", thisUserRoleList.stream().map(SysUserRoleBo::getName).toList()));
+            }
+        }
+        return page;
     }
 }
