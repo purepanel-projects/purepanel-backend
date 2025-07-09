@@ -26,7 +26,7 @@ mybatis-plus:
 
 purepanel:
   res-exception-enabled: true
-  local-object-store-base-path: C:/Users/bell1/Documents/dev
+  local-object-store-base-path: C:/Users/bell1/Documents/dev/
   login-config:
     single-session-login-enabled: false
     login-code-verify-enabled: false

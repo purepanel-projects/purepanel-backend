@@ -38,12 +38,12 @@ public class CommonServiceImpl implements CommonService {
     public String uploadFile(MultipartFile file) {
         String datePath = DateUtil.format(new Date(), "/yyyy/MM/dd");
         String fileName = IdUtil.getSnowflakeNextIdStr() + FileUtil.getSuffix(file.getOriginalFilename());
-        File dir = new File(purepanelProperties.getLocalObjectStoreBasePath() + "/upload" + datePath);
+        File dir = new File(purepanelProperties.getLocalObjectStoreBasePath() + "upload" + datePath);
         if (!dir.exists()) {
             boolean flag = dir.mkdirs();
         }
         try {
-            File localFile = new File(purepanelProperties.getLocalObjectStoreBasePath() + "/upload" + datePath + "/" + fileName);
+            File localFile = new File(purepanelProperties.getLocalObjectStoreBasePath() + "upload" + datePath + "/" + fileName);
             boolean flag = localFile.createNewFile();
             file.transferTo(localFile);
             return "/upload" + datePath + "/" + fileName;
