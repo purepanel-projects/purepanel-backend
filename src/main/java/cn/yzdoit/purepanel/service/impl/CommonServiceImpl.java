@@ -37,7 +37,7 @@ public class CommonServiceImpl implements CommonService {
     @Override
     public String uploadFile(MultipartFile file) {
         String datePath = DateUtil.format(new Date(), "/yyyy/MM/dd");
-        String fileName = IdUtil.getSnowflakeNextIdStr() + FileUtil.getSuffix(file.getOriginalFilename());
+        String fileName = IdUtil.getSnowflakeNextIdStr() + "." + FileUtil.getSuffix(file.getOriginalFilename());
         File dir = new File(purepanelProperties.getLocalObjectStoreBasePath() + "upload" + datePath);
         if (!dir.exists()) {
             boolean flag = dir.mkdirs();
