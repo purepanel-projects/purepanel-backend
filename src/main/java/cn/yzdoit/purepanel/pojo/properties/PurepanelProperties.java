@@ -18,13 +18,27 @@ public class PurepanelProperties {
      */
     private Boolean resExceptionEnabled = Boolean.TRUE;
 
+
+    /**
+     * 本地（磁盘）对象存储的基础路径
+     */
+    private String localObjectStoreBasePath;
+
     /**
      * 登录配置
      */
     private LoginConfig loginConfig;
 
+    /**
+     * 登录相关配置
+     */
     @Data
     public static class LoginConfig {
+
+        /**
+         * 是否开启 loginCode 验证
+         */
+        private Boolean loginCodeVerifyEnabled = Boolean.TRUE;
 
         /**
          * 单会话登录 一个账号多次登录会互相挤下线

@@ -1,5 +1,6 @@
 package cn.yzdoit.purepanel.exception;
 
+import cn.yzdoit.purepanel.constant.enums.ApiStatusEnum;
 import cn.yzdoit.purepanel.pojo.properties.PurepanelProperties;
 import cn.yzdoit.purepanel.pojo.res.Res;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,6 +13,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 
 /**
@@ -113,12 +115,26 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = HttpMessageNotReadableException.class)
     public Res<?> httpMessageNotReadableExceptionHandler(HttpServletRequest req, HttpMessageNotReadableException e) {
-        log.error("接口: {} 请求消息无法解析异常: {}", req.getRequestURI(), e.getMessage());
+        log.error("接口: {} 发生请求消息无法解析异常: {}", req.getRequestURI(), e.getMessage());
         log.error("请求消息无法解析异常:", e);
         if (purepanelProperties.getResExceptionEnabled()) {
             return Res.exception("请检查请求体格式");
         }
         return Res.fail();
+    }
+
+    /**
+     * 资源未找到异常
+     *
+     * @param req 请求参数
+     * @param e   异常信息
+     * @return Res
+     */
+    @ExceptionHandler(value = NoResourceFoundException.class)
+    public Res<?> notFoundExceptionHandler(HttpServletRequest req, NoResourceFoundException e) {
+        log.error("接口: {} 发生资源未找到异常: {}", req.getRequestURI(), e.getMessage());
+        log.error("资源未找到异常:", e);
+        return Res.build(ApiStatusEnum.NOT_FOUND);
     }
 
 }

@@ -28,6 +28,11 @@ public enum ApiStatusEnum {
     NO_PERMISSIONS(403, "无操作权限"),
 
     /**
+     * 资源未找到
+     */
+    NOT_FOUND(404, "资源未找到"),
+
+    /**
      * 失败
      */
     FAIL(500, "服务繁忙，请稍后再试");

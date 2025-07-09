@@ -8,6 +8,7 @@ import cn.yzdoit.purepanel.pojo.res.UserPageListRes;
 import cn.yzdoit.purepanel.service.SysUserService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "用户信息相关接口")
 @RequestMapping("/sysUser")
 public class SysUserController {
 
