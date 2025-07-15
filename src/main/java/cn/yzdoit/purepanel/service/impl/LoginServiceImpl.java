@@ -67,7 +67,7 @@ public class LoginServiceImpl implements LoginService {
                         , SysUser::getStatus, SysUser::getSalt, SysUser::getPwd)
                 .eq(SysUser::getAccount, req.getAccount()));
         CheckUtil.notNull(sysUser, "账号或密码错误");
-        CheckUtil.check(sysUser.getStatus() == 1, "该账号已被禁用");
+        CheckUtil.check(sysUser.getStatus(), "该账号已被禁用");
         CheckUtil.check(PwdUtil.verify(req.getPwd(), sysUser.getSalt(), sysUser.getPwd()), "账号或密码错误");
         //移除非必要字段
         sysUser.setPwd(null);

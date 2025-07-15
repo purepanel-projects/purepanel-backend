@@ -29,9 +29,6 @@ public class LoginCodeInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        if (!purepanelProperties.getLoginConfig().getLoginCodeVerifyEnabled()) {
-            return true;
-        }
         String loginCode = request.getHeader("Login-Code");
         String loginStateCacheStr = redisTemplate.opsForValue().get(RedisPrefix.SYS_LOGIN_STATE + loginCode);
         if (StrUtil.isBlank(loginStateCacheStr)) {

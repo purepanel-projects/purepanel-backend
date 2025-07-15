@@ -36,15 +36,9 @@ public class PurepanelProperties {
     public static class LoginConfig {
 
         /**
-         * 是否开启 loginCode 验证
-         */
-        private Boolean loginCodeVerifyEnabled = Boolean.TRUE;
-
-        /**
          * 单会话登录 一个账号多次登录会互相挤下线
          */
         private Boolean singleSessionLoginEnabled = Boolean.TRUE;
-
 
         /**
          * 登录过期时间 单位小时

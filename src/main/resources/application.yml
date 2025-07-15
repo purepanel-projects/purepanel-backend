@@ -29,7 +29,6 @@ purepanel:
   local-object-store-base-path: C:/Users/bell1/Documents/dev/
   login-config:
     single-session-login-enabled: false
-    login-code-verify-enabled: false
 
 logging:
   level:
