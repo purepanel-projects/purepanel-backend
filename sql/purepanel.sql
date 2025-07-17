@@ -11,7 +11,7 @@
  Target Server Version : 90300 (9.3.0)
  File Encoding         : 65001
 
- Date: 08/07/2025 07:10:34
+ Date: 17/07/2025 16:32:10
 */
 
 SET NAMES utf8mb4;
@@ -40,6 +40,8 @@ CREATE TABLE `sys_group`  (
 INSERT INTO `sys_group` VALUES ('1', NULL, '长安科技集团', 0, '2025-07-07 05:35:12', '2025-07-08 14:08:32', NULL, NULL, 0);
 INSERT INTO `sys_group` VALUES ('2', '1', '行政部', 0, '2025-07-07 05:40:00', '2025-07-08 14:08:40', NULL, NULL, 0);
 INSERT INTO `sys_group` VALUES ('3', '1', '市场部', 1, '2025-07-07 05:42:05', '2025-07-08 14:08:47', NULL, NULL, 0);
+INSERT INTO `sys_group` VALUES ('4', '2', '人事', 0, '2025-07-07 05:35:12', '2025-07-17 15:13:04', NULL, NULL, 0);
+INSERT INTO `sys_group` VALUES ('5', '2', '财务', 1, '2025-07-07 05:35:12', '2025-07-17 16:08:35', NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for sys_permission
@@ -93,6 +95,7 @@ CREATE TABLE `sys_role`  (
 -- Records of sys_role
 -- ----------------------------
 INSERT INTO `sys_role` VALUES ('1', 'ROOT', '2025-06-26 05:14:19', NULL, NULL, NULL, 0);
+INSERT INTO `sys_role` VALUES ('2', '普通用户', '2025-06-26 05:14:20', '2025-07-17 13:29:54', NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for sys_role_permission
@@ -146,8 +149,8 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('1', '蓝芷云', 'zhiyun', 'f72de1407dfe741d8499586d18e96dd9', 'ge67E5pX', NULL, 1, 'zyan1226@163.com', '13196302921', '2025-06-24 02:32:44', '2025-07-05 05:00:54', '1', NULL, 10);
-INSERT INTO `sys_user` VALUES ('2', '吴达', 'wuda', 'f72de1407dfe741d8499586d18e96dd9', 'ge67E5pX', NULL, 1, NULL, NULL, '2025-07-05 05:01:23', '2025-07-05 05:07:27', NULL, NULL, 0);
+INSERT INTO `sys_user` VALUES ('1', '芷云', 'zhiyun', 'f72de1407dfe741d8499586d18e96dd9', 'ge67E5pX', '/upload/2025/07/15/1945017283356725248.png', 1, 'zyan1226@163.com', '13196302921', '2025-06-24 02:32:44', '2025-07-15 15:57:43', '1', NULL, 10);
+INSERT INTO `sys_user` VALUES ('2', '吴达', 'wuda', 'f72de1407dfe741d8499586d18e96dd9', 'ge67E5pX', '/upload/2025/07/17/1945757054358044672.jpg', 1, NULL, NULL, '2025-07-05 05:01:23', '2025-07-17 16:10:35', NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for sys_user_group
@@ -163,7 +166,10 @@ CREATE TABLE `sys_user_group`  (
 -- ----------------------------
 -- Records of sys_user_group
 -- ----------------------------
-INSERT INTO `sys_user_group` VALUES ('1', '1', '2');
+INSERT INTO `sys_user_group` VALUES ('1945756819158126594', '1', '2');
+INSERT INTO `sys_user_group` VALUES ('1945757799018844161', '2', '4');
+INSERT INTO `sys_user_group` VALUES ('1945757799018844162', '2', '5');
+INSERT INTO `sys_user_group` VALUES ('1945757799018844163', '2', '3');
 
 -- ----------------------------
 -- Table structure for sys_user_role
@@ -179,6 +185,7 @@ CREATE TABLE `sys_user_role`  (
 -- ----------------------------
 -- Records of sys_user_role
 -- ----------------------------
-INSERT INTO `sys_user_role` VALUES ('1', '1', '1');
+INSERT INTO `sys_user_role` VALUES ('1945756819225235457', '1', '1');
+INSERT INTO `sys_user_role` VALUES ('1945757799085953025', '2', '2');
 
 SET FOREIGN_KEY_CHECKS = 1;

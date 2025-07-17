@@ -1,7 +1,7 @@
 package cn.yzdoit.purepanel.controller;
 
-import cn.yzdoit.purepanel.pojo.entity.SysUser;
 import cn.yzdoit.purepanel.pojo.req.ChangePwdReq;
+import cn.yzdoit.purepanel.pojo.req.UserSaveReq;
 import cn.yzdoit.purepanel.pojo.req.UserPageListReq;
 import cn.yzdoit.purepanel.pojo.res.Res;
 import cn.yzdoit.purepanel.pojo.res.UserPageListRes;
@@ -34,10 +34,10 @@ public class SysUserController {
         return Res.success(sysUserService.pageList(req));
     }
 
-    @PostMapping("/addOrUpdate")
+    @PostMapping("/save")
     @Operation(summary = "保存用户信息")
-    public Res<?> addOrUpdate(@RequestBody SysUser sysUser) {
-        sysUserService.addOrUpdate(sysUser);
+    public Res<?> save(@RequestBody UserSaveReq req) {
+        sysUserService.save(req);
         return Res.success();
     }
 

@@ -9,13 +9,19 @@ import cn.yzdoit.purepanel.pojo.bo.SysUserGroupBo;
 import cn.yzdoit.purepanel.pojo.bo.SysUserRoleBo;
 import cn.yzdoit.purepanel.pojo.bo.TwoParams;
 import cn.yzdoit.purepanel.pojo.entity.SysUser;
+import cn.yzdoit.purepanel.pojo.entity.SysUserGroup;
+import cn.yzdoit.purepanel.pojo.entity.SysUserRole;
 import cn.yzdoit.purepanel.pojo.req.ChangePwdReq;
 import cn.yzdoit.purepanel.pojo.req.UserPageListReq;
+import cn.yzdoit.purepanel.pojo.req.UserSaveReq;
 import cn.yzdoit.purepanel.pojo.res.UserPageListRes;
+import cn.yzdoit.purepanel.service.SysUserGroupService;
+import cn.yzdoit.purepanel.service.SysUserRoleService;
 import cn.yzdoit.purepanel.service.SysUserService;
 import cn.yzdoit.purepanel.util.CheckUtil;
 import cn.yzdoit.purepanel.util.PwdUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +44,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     private final SysUserMapper sysUserMapper;
     private final SysUserGroupMapper sysUserGroupMapper;
+    private final SysUserGroupService sysUserGroupService;
     private final SysUserRoleMapper sysUserRoleMapper;
+    private final SysUserRoleService sysUserRoleService;
 
     /**
      * 修改密码
@@ -65,19 +73,43 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     /**
      * 新增或修改用户信息
      *
-     * @param sysUser 用户信息
+     * @param req 用户信息
      */
     @Override
-    public void addOrUpdate(SysUser sysUser) {
-        if (StrUtil.isBlank(sysUser.getId())) {
+    public void save(UserSaveReq req) {
+        if (StrUtil.isBlank(req.getId())) {
             //新增
-            TwoParams<String, String> pwdParams = PwdUtil.encode(sysUser.getPwd());
-            sysUser.setPwd(pwdParams.getA());
-            sysUser.setSalt(pwdParams.getB());
-            sysUserMapper.insert(sysUser);
+            TwoParams<String, String> pwdParams = PwdUtil.encode(req.getPwd());
+            req.setPwd(pwdParams.getA());
+            req.setSalt(pwdParams.getB());
+            sysUserMapper.insert(req);
         } else {
             //修改
-            sysUserMapper.updateById(sysUser);
+            sysUserMapper.updateById(req);
+        }
+        //处理群组关联
+        sysUserGroupMapper.delete(Wrappers.<SysUserGroup>lambdaQuery()
+                .eq(SysUserGroup::getUserId, req.getId()));
+        if (CollUtil.isNotEmpty(req.getGroupIdList())) {
+            List<SysUserGroup> sysUserGroupList = req.getGroupIdList().stream().<SysUserGroup>map(groupId ->
+                    SysUserGroup.builder()
+                            .userId(req.getId())
+                            .groupId(groupId)
+                            .build()
+            ).toList();
+            sysUserGroupService.saveBatch(sysUserGroupList);
+        }
+        //处理角色关联
+        sysUserRoleMapper.delete(Wrappers.<SysUserRole>lambdaQuery()
+                .eq(SysUserRole::getUserId, req.getId()));
+        if (CollUtil.isNotEmpty(req.getRoleIdList())) {
+            List<SysUserRole> sysUserRoleList = req.getRoleIdList().stream().<SysUserRole>map(roleId ->
+                    SysUserRole.builder()
+                            .userId(req.getId())
+                            .roleId(roleId)
+                            .build()
+            ).toList();
+            sysUserRoleService.saveBatch(sysUserRoleList);
         }
     }
 
@@ -113,12 +145,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         for (UserPageListRes record : records) {
             List<SysUserGroupBo> thisUserGroupList = sysUserGroupBoListByUser.get(record.getId());
             if (null != thisUserGroupList) {
-                record.setGroupList(thisUserGroupList);
+                record.setGroupIdList(thisUserGroupList.stream().map(SysUserGroupBo::getGroupId).toList());
                 record.setGroupNames(String.join(",", thisUserGroupList.stream().map(SysUserGroupBo::getName).toList()));
             }
             List<SysUserRoleBo> thisUserRoleList = sysUserRoleBoListByUser.get(record.getId());
             if (null != thisUserRoleList) {
-                record.setRoleList(thisUserRoleList);
+                record.setRoleIdList(thisUserRoleList.stream().map(SysUserRoleBo::getRoleId).toList());
                 record.setRoleNames(String.join(",", thisUserRoleList.stream().map(SysUserRoleBo::getName).toList()));
             }
         }
