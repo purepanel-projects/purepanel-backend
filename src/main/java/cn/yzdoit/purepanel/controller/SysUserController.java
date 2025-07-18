@@ -57,4 +57,11 @@ public class SysUserController {
         sysUserService.changePwd(req);
         return Res.success();
     }
+
+    @DeleteMapping("/delete/{id}")
+    @Operation(summary = "删除指定用户")
+    public Res<?> delete(@PathVariable String id) {
+        sysUserService.removeById(id);
+        return Res.success();
+    }
 }

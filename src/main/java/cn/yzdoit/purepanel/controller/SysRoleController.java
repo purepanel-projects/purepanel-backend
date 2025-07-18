@@ -11,10 +11,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 角色信息相关接口
@@ -38,5 +35,19 @@ public class SysRoleController {
                 .like(StrUtil.isNotBlank(req.getName()), SysRole::getName, req.getName())
                 .orderByDesc(SysRole::getCreateTime));
         return Res.success(page);
+    }
+
+    @PostMapping("/save")
+    @Operation(summary = "保存角色信息")
+    public Res<?> save(@RequestBody SysRole req){
+        sysRoleService.saveOrUpdate(req);
+        return Res.success();
+    }
+
+    @DeleteMapping("/delete/{id}")
+    @Operation(summary = "删除指定角色")
+    public Res<?> delete(@PathVariable String id) {
+        sysRoleService.removeById(id);
+        return Res.success();
     }
 }
