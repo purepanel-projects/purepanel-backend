@@ -2,6 +2,7 @@ package cn.yzdoit.purepanel.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.yzdoit.purepanel.exception.BusinessException;
 import cn.yzdoit.purepanel.mapper.SysUserGroupMapper;
 import cn.yzdoit.purepanel.mapper.SysUserMapper;
 import cn.yzdoit.purepanel.mapper.SysUserRoleMapper;
@@ -25,6 +26,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -77,15 +79,19 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      */
     @Override
     public void save(UserSaveReq req) {
-        if (StrUtil.isBlank(req.getId())) {
-            //新增
-            TwoParams<String, String> pwdParams = PwdUtil.encode(req.getPwd());
-            req.setPwd(pwdParams.getA());
-            req.setSalt(pwdParams.getB());
-            sysUserMapper.insert(req);
-        } else {
-            //修改
-            sysUserMapper.updateById(req);
+        try {
+            if (StrUtil.isBlank(req.getId())) {
+                //新增
+                TwoParams<String, String> pwdParams = PwdUtil.encode(req.getPwd());
+                req.setPwd(pwdParams.getA());
+                req.setSalt(pwdParams.getB());
+                sysUserMapper.insert(req);
+            } else {
+                //修改
+                sysUserMapper.updateById(req);
+            }
+        } catch (DuplicateKeyException e) {
+            throw new BusinessException("账号 " + req.getAccount() + " 不可用，请换一个");
         }
         //处理群组关联
         sysUserGroupMapper.delete(Wrappers.<SysUserGroup>lambdaQuery()
