@@ -4,6 +4,9 @@ server:
     context-path: /purepanel
 
 spring:
+  servlet:
+    multipart:
+      max-file-size: 100MB
   application:
     name: purepanel-backend
   datasource:
@@ -26,7 +29,7 @@ mybatis-plus:
 
 purepanel:
   res-exception-enabled: true
-  local-object-store-base-path: C:/Users/bell1/Documents/dev/
+  local-object-store-base-path: /Users/zyan/Documents/dev/srv/purepanel/
   login-config:
     single-session-login-enabled: false
 
