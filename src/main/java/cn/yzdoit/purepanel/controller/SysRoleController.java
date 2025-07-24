@@ -2,6 +2,7 @@ package cn.yzdoit.purepanel.controller;
 
 import cn.hutool.core.util.StrUtil;
 import cn.yzdoit.purepanel.pojo.entity.SysRole;
+import cn.yzdoit.purepanel.pojo.req.RoleBindPermissionReq;
 import cn.yzdoit.purepanel.pojo.req.RolePageListReq;
 import cn.yzdoit.purepanel.pojo.res.Res;
 import cn.yzdoit.purepanel.service.SysRoleService;
@@ -39,8 +40,15 @@ public class SysRoleController {
 
     @PostMapping("/save")
     @Operation(summary = "保存角色信息")
-    public Res<?> save(@RequestBody SysRole req){
+    public Res<?> save(@RequestBody SysRole req) {
         sysRoleService.saveOrUpdate(req);
+        return Res.success();
+    }
+
+    @PostMapping("/bindPermission")
+    @Operation(summary = "为角色授权")
+    public Res<?> bindPermission(@RequestBody RoleBindPermissionReq req) {
+        sysRoleService.bindPermission(req);
         return Res.success();
     }
 
