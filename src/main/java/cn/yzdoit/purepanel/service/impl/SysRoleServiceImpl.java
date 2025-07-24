@@ -48,4 +48,18 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         );
         sysRolePermissionService.saveBatch(rolePermissionList);
     }
+
+    /**
+     * 获取角色拥有权限
+     *
+     * @param roleId 角色id
+     * @return List
+     */
+    @Override
+    public List<String> getHavePermission(String roleId) {
+        return sysRolePermissionService.list(Wrappers.<SysRolePermission>lambdaQuery()
+                        .select(SysRolePermission::getPermissionId)
+                        .eq(SysRolePermission::getRoleId, roleId))
+                .stream().map(SysRolePermission::getPermissionId).toList();
+    }
 }

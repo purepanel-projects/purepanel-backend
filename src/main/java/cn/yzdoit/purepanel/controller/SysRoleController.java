@@ -14,6 +14,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * 角色信息相关接口
  *
@@ -51,6 +53,13 @@ public class SysRoleController {
         sysRoleService.bindPermission(req);
         return Res.success();
     }
+
+    @GetMapping("/getHavePermission")
+    @Operation(summary = "获取角色拥有权限")
+    public Res<List<String>> getHavePermission(@RequestParam String roleId) {
+        return Res.success(sysRoleService.getHavePermission(roleId));
+    }
+
 
     @DeleteMapping("/delete/{id}")
     @Operation(summary = "删除指定角色")

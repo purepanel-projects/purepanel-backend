@@ -4,6 +4,8 @@ import cn.yzdoit.purepanel.pojo.entity.SysRole;
 import cn.yzdoit.purepanel.pojo.req.RoleBindPermissionReq;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * 角色相关服务
  *
@@ -18,4 +20,12 @@ public interface SysRoleService extends IService<SysRole> {
      * @param req 请求参数
      */
     void bindPermission(RoleBindPermissionReq req);
+
+    /**
+     * 获取角色拥有权限
+     *
+     * @param roleId 角色id
+     * @return List
+     */
+    List<String> getHavePermission(String roleId);
 }
