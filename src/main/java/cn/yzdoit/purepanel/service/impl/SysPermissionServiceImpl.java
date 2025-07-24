@@ -91,7 +91,10 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         if (CollectionUtil.isEmpty(permissionList)) {
             return GetUserPermissionRes.empty();
         }
-        //处理菜单信息
+        //处理总体权限树
+        List<SysPermissionTreeListRes> permissionTree = TreeListUtil.toTree(permissionList, SysPermission::getId, SysPermission::getPid
+                , SysPermissionTreeListRes::setChildren, SysPermissionTreeListRes.class);
+        //处理菜单树信息
         List<SysPermission> menuList = permissionList.stream()
                 .filter(p -> Arrays.asList(0, 2).contains(p.getType())).toList();
         List<SysPermissionTreeListRes> menuTree = TreeListUtil.toTree(menuList, SysPermission::getId, SysPermission::getPid
@@ -101,6 +104,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
                 .filter(p -> Objects.equals(p.getType(), 1)).toList();
         //响应
         return GetUserPermissionRes.builder()
+                .permissionTree(permissionTree)
                 .menuTree(menuTree)
                 .btnList(btnList)
                 .build();

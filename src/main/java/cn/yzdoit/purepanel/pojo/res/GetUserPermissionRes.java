@@ -25,6 +25,12 @@ public class GetUserPermissionRes implements Serializable {
     private static final long serialVersionUID = -4094662321270393724L;
 
     /**
+     * 所有权限树(菜单+按钮)
+     */
+    @Schema(description = "所有权限树(菜单+按钮)")
+    private List<SysPermissionTreeListRes> permissionTree;
+
+    /**
      * 菜单树
      */
     @Schema(description = "菜单树")
