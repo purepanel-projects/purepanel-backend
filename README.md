@@ -19,7 +19,7 @@ git clone https://github.com/purepanel-projects/purepanel-backend.git
 
 ### 初始化数据库
 
-运行项目目录下 `/sql/purepanel.sql` 文件初始化数据库。
+运行项目目录下 `sql/purepanel.sql` 文件初始化数据库。
 
 ### 修改项目配置
 
