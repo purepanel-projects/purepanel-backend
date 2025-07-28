@@ -3,6 +3,7 @@ package cn.yzdoit.purepanel.service.impl;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.yzdoit.purepanel.exception.BusinessException;
 import cn.yzdoit.purepanel.pojo.properties.PurepanelProperties;
 import cn.yzdoit.purepanel.service.CommonService;
@@ -31,22 +32,33 @@ public class CommonServiceImpl implements CommonService {
     /**
      * 上传文件
      *
-     * @param file 文件
+     * @param file    文件
+     * @param bizPath 业务路径
      * @return 文件路径（相对）
      */
     @Override
-    public String uploadFile(MultipartFile file) {
-        String datePath = DateUtil.format(new Date(), "/yyyy/MM/dd");
+    public String uploadFile(MultipartFile file, String bizPath) {
         String fileName = IdUtil.getSnowflakeNextIdStr() + "." + FileUtil.getSuffix(file.getOriginalFilename());
-        File dir = new File(purepanelProperties.getLocalObjectStoreBasePath() + "upload" + datePath);
+        String dirPath, datePath;
+        if (StrUtil.isNotBlank(bizPath)) {
+            datePath = "";
+            dirPath = purepanelProperties.getLocalObjectStoreBasePath() + "/" + bizPath;
+        } else {
+            datePath = DateUtil.format(new Date(), "/yyyy/MM/dd");
+            dirPath = purepanelProperties.getLocalObjectStoreBasePath() + "upload" + datePath;
+        }
+        File dir = new File(dirPath);
         if (!dir.exists()) {
             boolean flag = dir.mkdirs();
         }
         try {
-            File localFile = new File(purepanelProperties.getLocalObjectStoreBasePath() + "upload" + datePath + "/" + fileName);
+            File localFile = new File(dirPath + "/" + fileName);
             boolean flag = localFile.createNewFile();
             file.transferTo(localFile);
-            return "/upload" + datePath + "/" + fileName;
+            if (StrUtil.isBlank(bizPath)) {
+                return "upload" + datePath + "/" + fileName;
+            }
+            return bizPath + "/" + fileName;
         } catch (IOException e) {
             log.error("上传文件失败", e);
             throw new BusinessException("上传失败");

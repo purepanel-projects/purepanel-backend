@@ -28,7 +28,8 @@ public class CommonController {
 
     @PostMapping("/uploadFile")
     @Operation(summary = "上传文件")
-    public Res<String> uploadFile(@RequestParam("file") MultipartFile file) {
-        return Res.success(commonService.uploadFile(file));
+    public Res<String> uploadFile(@RequestParam("file") MultipartFile file
+            , @RequestParam(required = false) String bizPath) {
+        return Res.success(commonService.uploadFile(file, bizPath));
     }
 }
