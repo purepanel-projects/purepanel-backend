@@ -18,9 +18,9 @@ public enum ApiStatusEnum {
     SUCCESS(200, "处理成功"),
 
     /**
-     * 未授权（登录信息有误，需要重新登录）
+     * 登录超时，需要重新登录
      */
-    UNAUTHORIZED(401, "未授权（登录信息有误 需要重新登录）"),
+    UNAUTHORIZED(401, "登录超时，需要重新登录"),
 
     /**
      * 无操作权限

@@ -1,5 +1,7 @@
 package cn.yzdoit.purepanel.controller;
 
+import cn.yzdoit.purepanel.exception.BusinessException;
+import cn.yzdoit.purepanel.pojo.entity.SysUser;
 import cn.yzdoit.purepanel.pojo.req.ChangePwdReq;
 import cn.yzdoit.purepanel.pojo.req.UserSaveReq;
 import cn.yzdoit.purepanel.pojo.req.UserPageListReq;
@@ -10,6 +12,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +41,18 @@ public class SysUserController {
     @Operation(summary = "保存用户信息")
     public Res<?> save(@RequestBody UserSaveReq req) {
         sysUserService.save(req);
+        return Res.success();
+    }
+
+    @PostMapping("/selfEdit")
+    @Operation(summary = "登录用户自己编辑个人信息")
+    public Res<?> selfEdit(@RequestAttribute String loginUserId, @RequestBody SysUser req) {
+        req.setId(loginUserId);
+        try {
+            sysUserService.updateById(req);
+        } catch (DuplicateKeyException e) {
+            throw new BusinessException("账号 " + req.getAccount() + " 不可用，请换一个");
+        }
         return Res.success();
     }
 
