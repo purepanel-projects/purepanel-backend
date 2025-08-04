@@ -3,14 +3,19 @@ package cn.yzdoit.purepanel.controller;
 import cn.hutool.core.util.StrUtil;
 import cn.yzdoit.purepanel.exception.BusinessException;
 import cn.yzdoit.purepanel.pojo.entity.SysUser;
+import cn.yzdoit.purepanel.pojo.entity.SysUserGroup;
+import cn.yzdoit.purepanel.pojo.entity.SysUserRole;
 import cn.yzdoit.purepanel.pojo.properties.PurepanelProperties;
 import cn.yzdoit.purepanel.pojo.req.ChangePwdReq;
 import cn.yzdoit.purepanel.pojo.req.UserPageListReq;
 import cn.yzdoit.purepanel.pojo.req.UserSaveReq;
 import cn.yzdoit.purepanel.pojo.res.Res;
 import cn.yzdoit.purepanel.pojo.res.UserPageListRes;
+import cn.yzdoit.purepanel.service.SysUserGroupService;
+import cn.yzdoit.purepanel.service.SysUserRoleService;
 import cn.yzdoit.purepanel.service.SysUserService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +36,8 @@ import org.springframework.web.bind.annotation.*;
 public class SysUserController {
 
     private final SysUserService sysUserService;
+    private final SysUserRoleService sysUserRoleService;
+    private final SysUserGroupService sysUserGroupService;
     private final PurepanelProperties purepanelProperties;
 
 
@@ -83,6 +90,10 @@ public class SysUserController {
             return Res.fail("该用户为系统保留用户，不允许删除");
         }
         sysUserService.removeById(id);
+        sysUserRoleService.remove(Wrappers.<SysUserRole>lambdaQuery()
+                .eq(SysUserRole::getUserId, id));
+        sysUserGroupService.remove(Wrappers.<SysUserGroup>lambdaQuery()
+                .eq(SysUserGroup::getUserId, id));
         return Res.success();
     }
 }

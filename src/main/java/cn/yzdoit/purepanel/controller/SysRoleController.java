@@ -2,9 +2,11 @@ package cn.yzdoit.purepanel.controller;
 
 import cn.hutool.core.util.StrUtil;
 import cn.yzdoit.purepanel.pojo.entity.SysRole;
+import cn.yzdoit.purepanel.pojo.entity.SysRolePermission;
 import cn.yzdoit.purepanel.pojo.req.RoleBindPermissionReq;
 import cn.yzdoit.purepanel.pojo.req.RolePageListReq;
 import cn.yzdoit.purepanel.pojo.res.Res;
+import cn.yzdoit.purepanel.service.SysRolePermissionService;
 import cn.yzdoit.purepanel.service.SysRoleService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -29,6 +31,7 @@ import java.util.List;
 public class SysRoleController {
 
     private final SysRoleService sysRoleService;
+    private final SysRolePermissionService sysRolePermissionService;
 
 
     @PostMapping("/pageList")
@@ -65,6 +68,8 @@ public class SysRoleController {
     @Operation(summary = "删除指定角色")
     public Res<?> delete(@PathVariable String id) {
         sysRoleService.removeById(id);
+        sysRolePermissionService.remove(Wrappers.<SysRolePermission>lambdaQuery()
+                .eq(SysRolePermission::getRoleId, id));
         return Res.success();
     }
 }
