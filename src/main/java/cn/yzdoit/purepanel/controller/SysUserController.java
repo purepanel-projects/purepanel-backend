@@ -1,10 +1,12 @@
 package cn.yzdoit.purepanel.controller;
 
+import cn.hutool.core.util.StrUtil;
 import cn.yzdoit.purepanel.exception.BusinessException;
 import cn.yzdoit.purepanel.pojo.entity.SysUser;
+import cn.yzdoit.purepanel.pojo.properties.PurepanelProperties;
 import cn.yzdoit.purepanel.pojo.req.ChangePwdReq;
-import cn.yzdoit.purepanel.pojo.req.UserSaveReq;
 import cn.yzdoit.purepanel.pojo.req.UserPageListReq;
+import cn.yzdoit.purepanel.pojo.req.UserSaveReq;
 import cn.yzdoit.purepanel.pojo.res.Res;
 import cn.yzdoit.purepanel.pojo.res.UserPageListRes;
 import cn.yzdoit.purepanel.service.SysUserService;
@@ -29,6 +31,7 @@ import org.springframework.web.bind.annotation.*;
 public class SysUserController {
 
     private final SysUserService sysUserService;
+    private final PurepanelProperties purepanelProperties;
 
 
     @PostMapping("/pageList")
@@ -76,6 +79,9 @@ public class SysUserController {
     @DeleteMapping("/delete/{id}")
     @Operation(summary = "删除指定用户")
     public Res<?> delete(@PathVariable String id) {
+        if (StrUtil.equals(id, purepanelProperties.getRootUserId())) {
+            return Res.fail("该用户为系统保留用户，不允许删除");
+        }
         sysUserService.removeById(id);
         return Res.success();
     }

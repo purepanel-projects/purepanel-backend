@@ -40,7 +40,7 @@ public class GetUserPermissionRes implements Serializable {
      * 按钮列表
      */
     @Schema(description = "按钮列表")
-    private List<SysPermission> btnList;
+    private List<SysPermission> pageElementList;
 
     public static GetUserPermissionRes empty() {
         return GetUserPermissionRes.builder().build();

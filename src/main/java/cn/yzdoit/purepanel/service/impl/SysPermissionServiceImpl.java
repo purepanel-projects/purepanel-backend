@@ -8,6 +8,7 @@ import cn.yzdoit.purepanel.mapper.SysUserRoleMapper;
 import cn.yzdoit.purepanel.pojo.entity.SysPermission;
 import cn.yzdoit.purepanel.pojo.entity.SysRolePermission;
 import cn.yzdoit.purepanel.pojo.entity.SysUserRole;
+import cn.yzdoit.purepanel.pojo.properties.PurepanelProperties;
 import cn.yzdoit.purepanel.pojo.res.GetUserPermissionRes;
 import cn.yzdoit.purepanel.pojo.res.SysPermissionTreeListRes;
 import cn.yzdoit.purepanel.service.SysPermissionService;
@@ -34,6 +35,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     private final SysUserRoleMapper sysUserRoleMapper;
     private final SysRolePermissionMapper sysRolePermissionMapper;
     private final SysPermissionMapper sysPermissionMapper;
+    private final PurepanelProperties purepanelProperties;
 
     /**
      * 获取树形列表
@@ -67,27 +69,35 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
      */
     @Override
     public GetUserPermissionRes getUserPermission(String userId) {
-        //获取用户角色
-        List<String> roleIdList = sysUserRoleMapper.selectList(Wrappers.<SysUserRole>lambdaQuery()
-                        .select(SysUserRole::getRoleId)
-                        .eq(SysUserRole::getUserId, userId))
-                .stream().map(SysUserRole::getRoleId).toList();
-        if (CollectionUtil.isEmpty(roleIdList)) {
-            return GetUserPermissionRes.empty();
+        List<SysPermission> permissionList;
+        if (StrUtil.equals(userId, purepanelProperties.getRootUserId())) {
+            //根账号查询全部权限
+            permissionList = sysPermissionMapper.selectList(Wrappers.<SysPermission>lambdaQuery()
+                    .eq(SysPermission::getIsHidden, false)
+                    .orderByAsc(SysPermission::getOrderNo));
+        } else {
+            //获取用户角色
+            List<String> roleIdList = sysUserRoleMapper.selectList(Wrappers.<SysUserRole>lambdaQuery()
+                            .select(SysUserRole::getRoleId)
+                            .eq(SysUserRole::getUserId, userId))
+                    .stream().map(SysUserRole::getRoleId).toList();
+            if (CollectionUtil.isEmpty(roleIdList)) {
+                return GetUserPermissionRes.empty();
+            }
+            //获取角色权限
+            List<String> permissionIdList = sysRolePermissionMapper.selectList(Wrappers.<SysRolePermission>lambdaQuery()
+                            .select(SysRolePermission::getPermissionId)
+                            .in(SysRolePermission::getRoleId, roleIdList))
+                    .stream().map(SysRolePermission::getPermissionId).toList();
+            if (CollectionUtil.isEmpty(permissionIdList)) {
+                return GetUserPermissionRes.empty();
+            }
+            //获取权限信息
+            permissionList = sysPermissionMapper.selectList(Wrappers.<SysPermission>lambdaQuery()
+                    .in(SysPermission::getId, permissionIdList)
+                    .eq(SysPermission::getIsHidden, false)
+                    .orderByAsc(SysPermission::getOrderNo));
         }
-        //获取角色权限
-        List<String> permissionIdList = sysRolePermissionMapper.selectList(Wrappers.<SysRolePermission>lambdaQuery()
-                        .select(SysRolePermission::getPermissionId)
-                        .in(SysRolePermission::getRoleId, roleIdList))
-                .stream().map(SysRolePermission::getPermissionId).toList();
-        if (CollectionUtil.isEmpty(permissionIdList)) {
-            return GetUserPermissionRes.empty();
-        }
-        //获取权限信息
-        List<SysPermission> permissionList = sysPermissionMapper.selectList(Wrappers.<SysPermission>lambdaQuery()
-                .in(SysPermission::getId, permissionIdList)
-                .eq(SysPermission::getIsHidden, false)
-                .orderByAsc(SysPermission::getOrderNo));
         if (CollectionUtil.isEmpty(permissionList)) {
             return GetUserPermissionRes.empty();
         }
@@ -100,13 +110,13 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         List<SysPermissionTreeListRes> menuTree = TreeListUtil.toTree(menuList, SysPermission::getId, SysPermission::getPid
                 , SysPermissionTreeListRes::setChildren, SysPermissionTreeListRes.class);
         //处理按钮信息
-        List<SysPermission> btnList = permissionList.stream()
+        List<SysPermission> pageElementsList = permissionList.stream()
                 .filter(p -> Objects.equals(p.getType(), 1)).toList();
         //响应
         return GetUserPermissionRes.builder()
                 .permissionTree(permissionTree)
                 .menuTree(menuTree)
-                .btnList(btnList)
+                .pageElementList(pageElementsList)
                 .build();
     }
 

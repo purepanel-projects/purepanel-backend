@@ -30,6 +30,13 @@ public class PurepanelProperties {
     private LoginConfig loginConfig;
 
     /**
+     * 根账号ID
+     * <p>
+     * 该账号会被保护，且拥有系统最高权限
+     */
+    private String rootUserId;
+
+    /**
      * 登录相关配置
      */
     @Data
