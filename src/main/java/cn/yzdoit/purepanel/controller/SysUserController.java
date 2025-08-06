@@ -1,6 +1,7 @@
 package cn.yzdoit.purepanel.controller;
 
 import cn.hutool.core.util.StrUtil;
+import cn.yzdoit.purepanel.constant.CacheName;
 import cn.yzdoit.purepanel.exception.BusinessException;
 import cn.yzdoit.purepanel.pojo.entity.SysUser;
 import cn.yzdoit.purepanel.pojo.entity.SysUserGroup;
@@ -19,6 +20,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -49,6 +51,7 @@ public class SysUserController {
 
     @PostMapping("/save")
     @Operation(summary = "保存用户信息")
+    @CacheEvict(value = CacheName.LIST_GROUP_AND_CHILDREN_BY_USER_ID, key = "#req.id")
     public Res<?> save(@RequestBody UserSaveReq req) {
         sysUserService.save(req);
         return Res.success();

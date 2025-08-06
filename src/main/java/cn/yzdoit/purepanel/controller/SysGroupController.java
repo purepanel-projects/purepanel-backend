@@ -1,11 +1,13 @@
 package cn.yzdoit.purepanel.controller;
 
+import cn.yzdoit.purepanel.constant.CacheName;
 import cn.yzdoit.purepanel.pojo.entity.SysGroup;
 import cn.yzdoit.purepanel.pojo.res.Res;
 import cn.yzdoit.purepanel.service.SysGroupService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,6 +34,7 @@ public class SysGroupController {
 
     @PostMapping("/save")
     @Operation(summary = "保存群组信息")
+    @CacheEvict(value = CacheName.LIST_GROUP_AND_CHILDREN_BY_USER_ID, allEntries = true)
     public Res<?> save(@RequestBody SysGroup req) {
         sysGroupService.saveOrUpdate(req);
         return Res.success();
@@ -39,6 +42,7 @@ public class SysGroupController {
 
     @DeleteMapping("/delete/{id}")
     @Operation(summary = "删除指定群组")
+    @CacheEvict(value = CacheName.LIST_GROUP_AND_CHILDREN_BY_USER_ID, allEntries = true)
     public Res<?> delete(@PathVariable String id) {
         sysGroupService.removeById(id);
         return Res.success();
