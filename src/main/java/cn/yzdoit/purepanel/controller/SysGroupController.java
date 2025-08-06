@@ -2,12 +2,16 @@ package cn.yzdoit.purepanel.controller;
 
 import cn.yzdoit.purepanel.constant.CacheName;
 import cn.yzdoit.purepanel.pojo.entity.SysGroup;
+import cn.yzdoit.purepanel.pojo.entity.SysUserGroup;
 import cn.yzdoit.purepanel.pojo.res.Res;
 import cn.yzdoit.purepanel.service.SysGroupService;
+import cn.yzdoit.purepanel.service.SysUserGroupService;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +29,7 @@ import java.util.List;
 public class SysGroupController {
 
     private final SysGroupService sysGroupService;
+    private final SysUserGroupService sysUserGroupService;
 
     @GetMapping("/allTreeList")
     @Operation(summary = "获取树形列表")
@@ -43,8 +48,11 @@ public class SysGroupController {
     @DeleteMapping("/delete/{id}")
     @Operation(summary = "删除指定群组")
     @CacheEvict(value = CacheName.LIST_GROUP_AND_CHILDREN_BY_USER_ID, allEntries = true)
+    @Transactional(rollbackFor = Exception.class)
     public Res<?> delete(@PathVariable String id) {
         sysGroupService.removeById(id);
+        sysUserGroupService.remove(Wrappers.<SysUserGroup>lambdaQuery()
+                .eq(SysUserGroup::getGroupId, id));
         return Res.success();
     }
 }

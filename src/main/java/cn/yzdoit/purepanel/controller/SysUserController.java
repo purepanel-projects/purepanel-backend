@@ -22,6 +22,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -88,6 +89,7 @@ public class SysUserController {
 
     @DeleteMapping("/delete/{id}")
     @Operation(summary = "删除指定用户")
+    @Transactional(rollbackFor = Exception.class)
     public Res<?> delete(@PathVariable String id) {
         if (StrUtil.equals(id, purepanelProperties.getRootUserId())) {
             return Res.fail("该用户为系统保留用户，不允许删除");

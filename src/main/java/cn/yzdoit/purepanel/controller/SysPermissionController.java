@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -51,6 +52,7 @@ public class SysPermissionController {
 
     @DeleteMapping("/delete/{id}")
     @Operation(summary = "删除菜单权限定义")
+    @Transactional(rollbackFor = Exception.class)
     public Res<?> delete(@PathVariable String id) {
         sysPermissionService.recurDelete(Collections.singletonList(id));
         return Res.success();
