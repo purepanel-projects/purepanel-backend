@@ -1,10 +1,16 @@
 package cn.yzdoit.purepanel.config;
 
 import cn.yzdoit.purepanel.ai.AiTools;
+import com.alibaba.cloud.ai.memory.jdbc.MysqlChatMemoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
+import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.ai.chat.memory.ChatMemoryRepository;
+import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * AI 配置
@@ -17,11 +23,19 @@ import org.springframework.context.annotation.Configuration;
 public class AiConfig {
 
     private final AiTools aiTools;
+    private final JdbcTemplate jdbcTemplate;
 
     @Bean
     public ChatClient chatClient(ChatClient.Builder chatClientBuilder) {
+        ChatMemoryRepository chatMemoryRepository = MysqlChatMemoryRepository.mysqlBuilder()
+                .jdbcTemplate(jdbcTemplate)
+                .build();
+        ChatMemory chatMemory = MessageWindowChatMemory.builder()
+                .chatMemoryRepository(chatMemoryRepository)
+                .build();
         return chatClientBuilder.defaultSystem("你是一个博学的智能聊天助手，请根据用户提问回答！")
                 .defaultTools(aiTools)
+                .defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build())
                 .build();
     }
 }
