@@ -5,6 +5,7 @@ import com.alibaba.cloud.ai.memory.jdbc.MysqlChatMemoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
+import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.ChatMemoryRepository;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
@@ -35,7 +36,8 @@ public class AiConfig {
                 .build();
         return chatClientBuilder.defaultSystem("你是一个博学的智能聊天助手，请根据用户提问回答！")
                 .defaultTools(aiTools)
-                .defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build())
+                .defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build()
+                        , new SimpleLoggerAdvisor())
                 .build();
     }
 }
