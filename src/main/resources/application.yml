@@ -21,11 +21,11 @@ spring:
       host: localhost
       port: 6379
   ai:
-    zhipuai:
-      api-key: ${ZHIPUAI_API_KEY}
+    dashscope:
+      api-key: ${DASHSCOPE_API_KEY}
       chat:
         options:
-          model: glm-4.5-flash
+          model: qwen-max
 
 mybatis-plus:
   mapper-locations: classpath*:cn/yzdoit/purepanel/mapper/xml/*Mapper.xml

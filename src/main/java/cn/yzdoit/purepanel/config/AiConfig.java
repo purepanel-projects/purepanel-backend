@@ -3,7 +3,6 @@ package cn.yzdoit.purepanel.config;
 import cn.yzdoit.purepanel.ai.AiTools;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.zhipuai.ZhiPuAiChatModel;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,8 +19,8 @@ public class AiConfig {
     private final AiTools aiTools;
 
     @Bean
-    public ChatClient chatClient(ZhiPuAiChatModel zhiPuAiChatModel) {
-        return ChatClient.builder(zhiPuAiChatModel)
+    public ChatClient chatClient(ChatClient.Builder chatClientBuilder) {
+        return chatClientBuilder.defaultSystem("你是一个博学的智能聊天助手，请根据用户提问回答！")
                 .defaultTools(aiTools)
                 .build();
     }
