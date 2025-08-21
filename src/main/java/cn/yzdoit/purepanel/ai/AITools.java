@@ -15,7 +15,7 @@ import java.util.List;
  */
 @Component
 @RequiredArgsConstructor
-public class AiTools {
+public class AITools {
 
     private final SysPermissionService sysPermissionService;
 
