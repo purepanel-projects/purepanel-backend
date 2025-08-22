@@ -1,5 +1,6 @@
 package cn.yzdoit.purepanel.service;
 
+import cn.yzdoit.purepanel.pojo.req.AIChatReq;
 import reactor.core.publisher.Flux;
 
 /**
@@ -13,12 +14,10 @@ public interface AIChatService {
     /**
      * AI 聊天
      *
-     * @param question       问题
-     * @param conversationId 会话ID
-     * @param modelName      模型名称
-     * @param userId         用户ID
+     * @param req    请求参数
+     * @param userId 用户ID
      * @return Flux 流式结果
      */
-    Flux<String> chat(String question, String conversationId, String modelName, String userId);
+    Flux<String> chat(AIChatReq req, String userId);
 
 }

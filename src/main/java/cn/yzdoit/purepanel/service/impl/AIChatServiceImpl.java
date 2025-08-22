@@ -5,6 +5,7 @@ import cn.yzdoit.purepanel.mapper.AiChatbotChatRecordMapper;
 import cn.yzdoit.purepanel.mapper.AiChatbotConversationMapper;
 import cn.yzdoit.purepanel.pojo.entity.AiChatbotChatRecord;
 import cn.yzdoit.purepanel.pojo.entity.AiChatbotConversation;
+import cn.yzdoit.purepanel.pojo.req.AIChatReq;
 import cn.yzdoit.purepanel.service.AIChatService;
 import com.alibaba.cloud.ai.dashscope.api.DashScopeApi;
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatOptions;
@@ -36,14 +37,16 @@ public class AIChatServiceImpl implements AIChatService {
     /**
      * AI 聊天
      *
-     * @param question       问题
-     * @param conversationId 会话ID
-     * @param modelName      模型名称
-     * @param userId         用户ID
+     * @param req    请求参数
+     * @param userId 用户ID
      * @return Flux 流式结果
      */
     @Override
-    public Flux<String> chat(String question, String conversationId, String modelName, String userId) {
+    public Flux<String> chat(AIChatReq req, String userId) {
+        String conversationId = req.getConversationId();
+        String question = req.getQuestion();
+        String modelName = req.getModelName();
+
         //处理会话
         Long count = aiChatbotConversationMapper.selectCount(Wrappers.<AiChatbotConversation>lambdaQuery()
                 .eq(AiChatbotConversation::getId, conversationId));
