@@ -29,7 +29,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/login/**"
                         , "/swagger-ui/**"
                         , "/v3/api-docs/**"
-                        , "/chatbot/chat"
                         , "/files/**");
     }
 

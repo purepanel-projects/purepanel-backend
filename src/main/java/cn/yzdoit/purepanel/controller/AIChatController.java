@@ -25,8 +25,9 @@ public class AIChatController {
     @PostMapping(value = "/chat", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     @Operation(summary = "AI 聊天")
     public Flux<String> chat(@RequestBody String question
+            , @RequestAttribute String loginUserId
             , @RequestParam String conversationId
             , @RequestParam(required = false) String modelName) {
-        return aiChatService.chat(question, conversationId, modelName);
+        return aiChatService.chat(question, conversationId, modelName, loginUserId);
     }
 }

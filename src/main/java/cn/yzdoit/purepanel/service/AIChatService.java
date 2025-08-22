@@ -16,8 +16,9 @@ public interface AIChatService {
      * @param question       问题
      * @param conversationId 会话ID
      * @param modelName      模型名称
+     * @param userId         用户ID
      * @return Flux 流式结果
      */
-    Flux<String> chat(String question, String conversationId, String modelName);
+    Flux<String> chat(String question, String conversationId, String modelName, String userId);
 
 }

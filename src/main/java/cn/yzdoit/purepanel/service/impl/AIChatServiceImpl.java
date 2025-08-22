@@ -1,9 +1,14 @@
 package cn.yzdoit.purepanel.service.impl;
 
 import cn.hutool.core.util.StrUtil;
+import cn.yzdoit.purepanel.mapper.AiChatbotChatRecordMapper;
+import cn.yzdoit.purepanel.mapper.AiChatbotConversationMapper;
+import cn.yzdoit.purepanel.pojo.entity.AiChatbotChatRecord;
+import cn.yzdoit.purepanel.pojo.entity.AiChatbotConversation;
 import cn.yzdoit.purepanel.service.AIChatService;
 import com.alibaba.cloud.ai.dashscope.api.DashScopeApi;
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatOptions;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.memory.ChatMemory;
@@ -25,6 +30,8 @@ import java.util.stream.Collectors;
 public class AIChatServiceImpl implements AIChatService {
 
     private final ChatClient chatClient;
+    private final AiChatbotConversationMapper aiChatbotConversationMapper;
+    private final AiChatbotChatRecordMapper aiChatbotChatRecordMapper;
 
     /**
      * AI 聊天
@@ -32,10 +39,32 @@ public class AIChatServiceImpl implements AIChatService {
      * @param question       问题
      * @param conversationId 会话ID
      * @param modelName      模型名称
+     * @param userId         用户ID
      * @return Flux 流式结果
      */
     @Override
-    public Flux<String> chat(String question, String conversationId, String modelName) {
+    public Flux<String> chat(String question, String conversationId, String modelName, String userId) {
+        //处理会话
+        Long count = aiChatbotConversationMapper.selectCount(Wrappers.<AiChatbotConversation>lambdaQuery()
+                .eq(AiChatbotConversation::getId, conversationId));
+        if (count == 0) {
+            String conversationTitle = question;
+            if (conversationTitle.length() > 10) {
+                conversationTitle = question.substring(0, 10) + "...";
+            }
+            AiChatbotConversation aiChatbotConversation = AiChatbotConversation.builder()
+                    .id(conversationId)
+                    .title(conversationTitle)
+                    .userId(userId)
+                    .build();
+            aiChatbotConversationMapper.insert(aiChatbotConversation);
+        }
+        //处理会话记录
+        aiChatbotChatRecordMapper.insert(AiChatbotChatRecord.builder()
+                .conversationId(conversationId)
+                .type("USER")
+                .content(question)
+                .build());
 
         //支持的模型名称
         Set<String> supportModeNameSet = Arrays.stream(DashScopeApi.ChatModel.values())
@@ -48,13 +77,29 @@ public class AIChatServiceImpl implements AIChatService {
             return Flux.just("不支持的模型");
         }
 
+        //存储所有AI响应内容
+        StringBuilder allAssistantContent = new StringBuilder();
+
+        //调用并返回
         return chatClient.prompt()
+                //调用选项
                 .options(DashScopeChatOptions.builder()
                         .withModel(modelName)
                         .build())
+                //增强工具
                 .advisors(advisorSpec -> advisorSpec.param(ChatMemory.CONVERSATION_ID, conversationId))
+                //用户输入
                 .user(question)
+                //流式返回
                 .stream()
-                .content();
+                .content()
+                //每接收一段内容回调
+                .doOnNext(allAssistantContent::append)
+                //接收完成回调
+                .doOnComplete(() -> aiChatbotChatRecordMapper.insert(AiChatbotChatRecord.builder()
+                        .conversationId(conversationId)
+                        .type("ASSISTANT")
+                        .content(allAssistantContent.toString())
+                        .build()));
     }
 }
