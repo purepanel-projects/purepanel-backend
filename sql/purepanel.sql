@@ -11,11 +11,49 @@
  Target Server Version : 90300 (9.3.0)
  File Encoding         : 65001
 
- Date: 04/08/2025 16:11:12
+ Date: 25/08/2025 17:56:54
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for ai_chatbot_chat_record
+-- ----------------------------
+DROP TABLE IF EXISTS `ai_chatbot_chat_record`;
+CREATE TABLE `ai_chatbot_chat_record`  (
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '唯一主键',
+  `conversation_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '会话ID',
+  `type` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '类型 USER/ASSISTANT',
+  `content` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '内容',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'AI 聊天记录' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of ai_chatbot_chat_record
+-- ----------------------------
+INSERT INTO `ai_chatbot_chat_record` VALUES ('bb6970536dd83a983ceaad2212277a38', '2', 'USER', '系统菜单权限现状', '2025-08-22 10:06:25', NULL);
+INSERT INTO `ai_chatbot_chat_record` VALUES ('f3250d184c2aa199210d8c56ea264263', '2', 'ASSISTANT', '根据查询到的系统菜单权限信息，以下是当前系统菜单权限的结构和现状：\n\n---\n\n### **一级菜单：首页**\n- **路径**：`/home`\n- **图标**：`home`\n- **排序号**：0\n- **是否隐藏**：否\n- **权限级别**：2\n- **描述**：这是系统的主页面。\n\n---\n\n### **一级菜单：系统管理**\n- **路径**：空（父级菜单）\n- **图标**：`system-setting`\n- **排序号**：1\n- **是否隐藏**：否\n- **权限级别**：1\n- **子菜单**：\n  1. **菜单权限**\n     - **路径**：`/permission`\n     - **图标**：`view-list`\n     - **排序号**：1\n     - **是否隐藏**：否\n     - **权限级别**：3\n     - **描述**：用于管理系统的菜单权限定义。\n\n  2. **用户管理**\n     - **路径**：`/user`\n     - **图标**：`user-setting`\n     - **排序号**：2\n     - **是否隐藏**：否\n     - **权限级别**：3\n     - **子功能**：\n       - **按钮-新增用户**\n         - **路径**：空\n         - **图标**：无\n         - **排序号**：0\n         - **是否隐藏**：否\n         - **权限代码**：`SYS_USER_ADD`\n         - **权限级别**：4\n         - **描述**：新增用户功能的按钮权限。\n\n  3. **群组管理**\n     - **路径**：`/group`\n     - **图标**：`usergroup`\n     - **排序号**：3\n     - **是否隐藏**：否\n     - **权限级别**：2\n     - **描述**：用于管理用户群组。\n\n  4. **角色管理**\n     - **路径**：`/role`\n     - **图标**：`user-marked`\n     - **排序号**：4\n     - **是否隐藏**：否\n     - **权限级别**：2\n     - **描述**：用于管理系统角色。\n\n---\n\n### **总结**\n1. 系统目前有两个一级菜单：**首页** 和 **系统管理**。\n2. **系统管理** 菜单下包含四个子菜单：**菜单权限**、**用户管理**、**群组管理** 和 **角色管理**。\n3. **用户管理** 菜单下还定义了一个具体的按钮权限：**新增用户**（权限代码：`SYS_USER_ADD`），用于控制特定操作。\n4. 权限级别从高到低依次为：1（最高）、2、3、4（最低）。\n\n如果需要进一步调整或查询特定权限，请随时告知！', '2025-08-22 10:06:40', NULL);
+
+-- ----------------------------
+-- Table structure for ai_chatbot_conversation
+-- ----------------------------
+DROP TABLE IF EXISTS `ai_chatbot_conversation`;
+CREATE TABLE `ai_chatbot_conversation`  (
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '唯一主键',
+  `title` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '会话标题',
+  `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '用户ID',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'AI 聊天会话' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of ai_chatbot_conversation
+-- ----------------------------
+INSERT INTO `ai_chatbot_conversation` VALUES ('2', '系统菜单权限现状', '1948042872317145090', '2025-08-22 10:06:25', NULL);
 
 -- ----------------------------
 -- Table structure for sys_group
@@ -74,6 +112,7 @@ INSERT INTO `sys_permission` VALUES ('1941127559303680001', '6', 0, '/user', '�
 INSERT INTO `sys_permission` VALUES ('1942393667177238530', '6', 0, '/group', '群组管理', 'usergroup', 3, 0, '2025-07-08 09:21:52', NULL, NULL, NULL, 2, NULL, 0);
 INSERT INTO `sys_permission` VALUES ('1942480488057921537', '6', 0, '/role', '角色管理', 'user-marked', 4, 0, '2025-07-08 15:06:52', NULL, NULL, NULL, 2, NULL, 0);
 INSERT INTO `sys_permission` VALUES ('1952265289684373505', '1941127559303680001', 1, NULL, '按钮-新增用户', NULL, 0, 0, '2025-08-04 15:08:11', '2025-08-04 16:00:16', NULL, NULL, 4, 'SYS_USER_ADD', 1);
+INSERT INTO `sys_permission` VALUES ('1959901330290507778', NULL, 0, '/aiChatbot', 'AI 助理', 'chat-bubble-smile', 0, 0, '2025-08-25 16:51:05', NULL, NULL, NULL, 2, NULL, 0);
 INSERT INTO `sys_permission` VALUES ('6', NULL, 2, '', '系统管理', 'system-setting', 1, 0, '2025-06-23 06:08:00', '2025-07-07 05:45:12', NULL, NULL, 1, NULL, 1);
 INSERT INTO `sys_permission` VALUES ('7', '6', 0, '/permission', '菜单权限', 'view-list', 1, 0, '2025-06-23 06:08:00', '2025-07-01 10:29:22', NULL, NULL, 3, NULL, 1);
 
@@ -96,6 +135,7 @@ CREATE TABLE `sys_role`  (
 -- Records of sys_role
 -- ----------------------------
 INSERT INTO `sys_role` VALUES ('1', 'ROOT', '2025-06-26 05:14:19', NULL, NULL, NULL, 0);
+INSERT INTO `sys_role` VALUES ('1952554967503376385', '普通用户', '2025-08-05 10:19:15', NULL, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for sys_role_permission
@@ -111,12 +151,16 @@ CREATE TABLE `sys_role_permission`  (
 -- ----------------------------
 -- Records of sys_role_permission
 -- ----------------------------
-INSERT INTO `sys_role_permission` VALUES ('1952277973653958658', '1', '1');
-INSERT INTO `sys_role_permission` VALUES ('1952277973653958659', '1', '1942480488057921537');
-INSERT INTO `sys_role_permission` VALUES ('1952277973653958660', '1', '6');
-INSERT INTO `sys_role_permission` VALUES ('1952277973653958661', '1', '7');
-INSERT INTO `sys_role_permission` VALUES ('1952277973653958662', '1', '1941127559303680001');
-INSERT INTO `sys_role_permission` VALUES ('1952277973653958663', '1', '1942393667177238530');
+INSERT INTO `sys_role_permission` VALUES ('1952555462913593346', '1952554967503376385', '1');
+INSERT INTO `sys_role_permission` VALUES ('1952555462913593347', '1952554967503376385', '6');
+INSERT INTO `sys_role_permission` VALUES ('1952555462913593348', '1952554967503376385', '1941127559303680001');
+INSERT INTO `sys_role_permission` VALUES ('1952555668803588098', '1', '1');
+INSERT INTO `sys_role_permission` VALUES ('1952555668803588099', '1', '1952265289684373505');
+INSERT INTO `sys_role_permission` VALUES ('1952555668803588100', '1', '1942480488057921537');
+INSERT INTO `sys_role_permission` VALUES ('1952555668803588101', '1', '6');
+INSERT INTO `sys_role_permission` VALUES ('1952555668803588102', '1', '7');
+INSERT INTO `sys_role_permission` VALUES ('1952555668803588103', '1', '1941127559303680001');
+INSERT INTO `sys_role_permission` VALUES ('1952555668803588104', '1', '1942393667177238530');
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -146,6 +190,7 @@ CREATE TABLE `sys_user`  (
 -- Records of sys_user
 -- ----------------------------
 INSERT INTO `sys_user` VALUES ('1948042872317145090', '管理员', 'admin', '91cd443c866ab888fc0cf781690159e1', 'tleXavQC', NULL, 1, NULL, NULL, '2025-07-23 23:29:48', '2025-07-29 14:41:21', NULL, NULL, 0);
+INSERT INTO `sys_user` VALUES ('1952555299658698754', '王小熙', 'wxx', '1702836bf16f664c7450f1ef917cb135', 'nLH9ESPs', NULL, 1, NULL, NULL, '2025-08-05 10:20:34', NULL, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for sys_user_group
@@ -162,6 +207,8 @@ CREATE TABLE `sys_user_group`  (
 -- Records of sys_user_group
 -- ----------------------------
 INSERT INTO `sys_user_group` VALUES ('1948050397166936066', '1', '2');
+INSERT INTO `sys_user_group` VALUES ('1952555299725807618', '1952555299658698754', '4');
+INSERT INTO `sys_user_group` VALUES ('1952555299725807619', '1952555299658698754', '3');
 
 -- ----------------------------
 -- Table structure for sys_user_role
@@ -178,5 +225,6 @@ CREATE TABLE `sys_user_role`  (
 -- Records of sys_user_role
 -- ----------------------------
 INSERT INTO `sys_user_role` VALUES ('1948050397305348098', '1', '1');
+INSERT INTO `sys_user_role` VALUES ('1952555299788722177', '1952555299658698754', '1952554967503376385');
 
 SET FOREIGN_KEY_CHECKS = 1;
