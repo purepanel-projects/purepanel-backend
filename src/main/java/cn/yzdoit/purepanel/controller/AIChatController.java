@@ -1,9 +1,11 @@
 package cn.yzdoit.purepanel.controller;
 
+import cn.yzdoit.purepanel.pojo.entity.AiChatbotChatRecord;
 import cn.yzdoit.purepanel.pojo.entity.AiChatbotConversation;
 import cn.yzdoit.purepanel.pojo.req.AIChatReq;
 import cn.yzdoit.purepanel.pojo.res.Res;
 import cn.yzdoit.purepanel.service.AIChatService;
+import cn.yzdoit.purepanel.service.AiChatbotChatRecordService;
 import cn.yzdoit.purepanel.service.AiChatbotConversationService;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,6 +31,7 @@ public class AIChatController {
 
     private final AIChatService aiChatService;
     private final AiChatbotConversationService aiChatbotConversationService;
+    private final AiChatbotChatRecordService aiChatbotChatRecordService;
 
     @PostMapping(value = "/chat", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     @Operation(summary = "AI 聊天")
@@ -42,5 +45,13 @@ public class AIChatController {
         return Res.success(aiChatbotConversationService.list(Wrappers.<AiChatbotConversation>lambdaQuery()
                 .eq(AiChatbotConversation::getUserId, loginUserId)
                 .orderByDesc(AiChatbotConversation::getCreateTime)));
+    }
+
+    @GetMapping("/listChatRecord")
+    @Operation(summary = "查询聊天记录")
+    public Res<List<AiChatbotChatRecord>> listChatRecord(@RequestParam String conversationId) {
+        return Res.success(aiChatbotChatRecordService.list(Wrappers.<AiChatbotChatRecord>lambdaQuery()
+                .eq(AiChatbotChatRecord::getConversationId, conversationId)
+                .orderByAsc(AiChatbotChatRecord::getCreateTime)));
     }
 }
