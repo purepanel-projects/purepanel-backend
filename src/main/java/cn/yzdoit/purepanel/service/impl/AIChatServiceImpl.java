@@ -52,8 +52,8 @@ public class AIChatServiceImpl implements AIChatService {
                 .eq(AiChatbotConversation::getId, conversationId));
         if (count == 0) {
             String conversationTitle = question;
-            if (conversationTitle.length() > 10) {
-                conversationTitle = question.substring(0, 10) + "...";
+            if (conversationTitle.length() > 64) {
+                conversationTitle = question.substring(0, 64);
             }
             AiChatbotConversation aiChatbotConversation = AiChatbotConversation.builder()
                     .id(conversationId)
