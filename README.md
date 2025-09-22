@@ -1,7 +1,11 @@
 # PurePanel 后端服务
+
 <p>
   <a href="https://github.com/purepanel-projects/purepanel-backend/blob/main/LICENSE">
     <img src="https://img.shields.io/github/license/purepanel-projects/purepanel-backend" alt="License"/>
+  </a>
+  <a href="https://github.com/purepanel-projects/purepanel-backend/releases">
+    <img src="https://img.shields.io/github/v/release/purepanel-projects/purepanel-backend" alt="Version"/>
   </a>
   <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/purepanel-projects/purepanel-backend">
   <img alt="GitHub User's stars" src="https://img.shields.io/github/stars/purepanel-projects/purepanel-backend">
