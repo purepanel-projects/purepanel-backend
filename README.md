@@ -1,5 +1,5 @@
-<div style="text-align: center">
-  <h1>PurePanel 后端服务</h1>
+# PurePanel 后端服务
+<p>
   <a href="https://github.com/purepanel-projects/purepanel-backend/blob/main/LICENSE">
     <img src="https://img.shields.io/github/license/purepanel-projects/purepanel-backend" alt="License"/>
   </a>
@@ -8,7 +8,7 @@
   <a href="https://deepwiki.com/purepanel-projects/purepanel-backend">
     <img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki">
   </a>
-</div>
+</p>
 
 ## 快速开始
 
