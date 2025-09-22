@@ -1,4 +1,14 @@
-# PurePanel 后端服务
+<div style="text-align: center">
+  <h1>PurePanel 后端服务</h1>
+  <a href="https://github.com/purepanel-projects/purepanel-backend/blob/main/LICENSE">
+    <img src="https://img.shields.io/github/license/purepanel-projects/purepanel-backend" alt="License"/>
+  </a>
+  <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/purepanel-projects/purepanel-backend">
+  <img alt="GitHub User's stars" src="https://img.shields.io/github/stars/purepanel-projects/purepanel-backend">
+  <a href="https://deepwiki.com/purepanel-projects/purepanel-backend">
+    <img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki">
+  </a>
+</div>
 
 ## 快速开始
 
@@ -7,7 +17,6 @@
 #### 方式一
 
 前往 [版本发布页](https://github.com/purepanel-projects/purepanel-backend/releases) 获取相应版本代码。
-
 
 #### 方式二
 
