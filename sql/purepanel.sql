@@ -11,7 +11,7 @@
  Target Server Version : 90300 (9.3.0)
  File Encoding         : 65001
 
- Date: 25/08/2025 17:56:54
+ Date: 22/09/2025 14:12:53
 */
 
 SET NAMES utf8mb4;
@@ -34,8 +34,24 @@ CREATE TABLE `ai_chatbot_chat_record`  (
 -- ----------------------------
 -- Records of ai_chatbot_chat_record
 -- ----------------------------
+INSERT INTO `ai_chatbot_chat_record` VALUES ('139908d0920118556dfb6d4ac98dc693', '7368548139356257113', 'USER', '真牛逼呀', '2025-09-02 15:39:37', NULL);
+INSERT INTO `ai_chatbot_chat_record` VALUES ('1ac967cb7ffa0f45f76e9cb6389e16b0', '7365983400854977077', 'USER', 'hello，你好呀', '2025-08-26 13:48:16', NULL);
+INSERT INTO `ai_chatbot_chat_record` VALUES ('23baa7c3741d8a0d3b90e7a398170272', '7365996222703768610', 'USER', '系统菜单权限现状，用表格呈现', '2025-08-26 14:39:13', NULL);
+INSERT INTO `ai_chatbot_chat_record` VALUES ('2de5268197c8ed23008907964845a494', '1', 'ASSISTANT', '你好！我是 **Qwen3**，是通义实验室推出的最新一代大语言模型。我是在“千问”系列模型的基础上进行迭代和优化的版本，具备更强的语言理解、推理和生成能力。如果你有任何问题，欢迎随时向我提问！', '2025-08-26 11:21:44', NULL);
+INSERT INTO `ai_chatbot_chat_record` VALUES ('4f052da6718ed03f10b1d5c74208b238', '7368548139356257113', 'ASSISTANT', '谢谢夸奖！😊 有什么我可以帮你的吗？', '2025-09-02 15:39:39', NULL);
+INSERT INTO `ai_chatbot_chat_record` VALUES ('50d540880e4b463e6e8d98e27c92834f', '7365982097029282452', 'ASSISTANT', '你好！有什么问题我可以帮助你吗？', '2025-08-26 13:43:39', NULL);
+INSERT INTO `ai_chatbot_chat_record` VALUES ('529aaa6ec531fbcc7c90a433c27bbef0', '7365983400854977077', 'ASSISTANT', '你好！有什么问题我可以帮助你吗？', '2025-08-26 13:48:56', NULL);
+INSERT INTO `ai_chatbot_chat_record` VALUES ('6c633c7a49c96ebb018c2b567ba378f5', '1', 'USER', '你好', '2025-08-26 11:21:41', NULL);
+INSERT INTO `ai_chatbot_chat_record` VALUES ('7697e6e430adaf883e2c33aa7a2489d1', '2', 'USER', '系统菜单权限现状，用表格呈现', '2025-08-26 14:38:40', NULL);
+INSERT INTO `ai_chatbot_chat_record` VALUES ('8b6f11f5b58fc0f5b7722ba0096e2d2e', '7365983400854977077', 'USER', 'hello，你好呀', '2025-08-26 13:48:56', NULL);
+INSERT INTO `ai_chatbot_chat_record` VALUES ('932dfb3c39eca8a12fd23c959ad7be07', '7365983400854977077', 'ASSISTANT', '抱歉，我不太明白你的意思。如果你有具体的问题或需要帮助，请告诉我，我会尽力提供支持！', '2025-08-26 13:49:13', NULL);
+INSERT INTO `ai_chatbot_chat_record` VALUES ('a250e88c826f14156fa94486b1705e19', '7365983400854977077', 'USER', '妈了个巴子', '2025-08-26 13:49:12', NULL);
 INSERT INTO `ai_chatbot_chat_record` VALUES ('bb6970536dd83a983ceaad2212277a38', '2', 'USER', '系统菜单权限现状', '2025-08-22 10:06:25', NULL);
+INSERT INTO `ai_chatbot_chat_record` VALUES ('cc9ec2a626732ba57d8ba22234db1a9a', '7365996222703768610', 'ASSISTANT', '以下是系统菜单权限现状的表格呈现：\n\n### 系统菜单权限现状表\n\n| ID                  | 菜单标题     | 菜单类型 | 路径         | 图标               | 排序号 | 是否隐藏 | 级别 | 权限代码       |\n|---------------------|--------------|----------|--------------|--------------------|--------|----------|------|----------------|\n| 1                   | 首页         | 0        | /home        | home               | 0      | 否       | 2    | -              |\n| 1959901330290507778 | AI 助理      | 0        | /aiChatbot   | chat-bubble-smile  | 0      | 否       | 2    | -              |\n| 6                   | 系统管理     | 2        | -            | system-setting     | 1      | 否       | 1    | -              |\n| 7                   | 菜单权限     | 0        | /permission  | view-list          | 1      | 否       | 3    | -              |\n| 1941127559303680001 | 用户管理     | 0        | /user        | user-setting       | 2      | 否       | 3    | -              |\n| 1952265289684373505 | 按钮-新增用户| 1        | -            | -                  | 0      | 否       | 4    | SYS_USER_ADD   |\n| 1942393667177238530 | 群组管理     | 0        | /group       | usergroup          | 3      | 否       | 2    | -              |\n| 1942480488057921537 | 角色管理     | 0        | /role        | user-marked        | 4      | 否       | 2    | -              |\n\n#### 说明：\n- **菜单类型**：\n  - 0：普通菜单\n  - 1：按钮\n  - 2：父级菜单\n- **路径**：点击菜单时跳转的路由地址。\n- **图标**：菜单展示的图标标识。\n- **权限代码**：对应后端权限控制的编码，若没有则为“-”。\n- **是否隐藏**：菜单是否在导航栏中隐藏。\n- **级别**：菜单的层级结构（1为最高级）。', '2025-08-26 14:39:39', NULL);
+INSERT INTO `ai_chatbot_chat_record` VALUES ('ef0c6623b38321e7fca10933845bc188', '7365982097029282452', 'USER', '你好', '2025-08-26 13:43:05', NULL);
+INSERT INTO `ai_chatbot_chat_record` VALUES ('f0b727b8628c22bda37614c055d949d4', '7365982097029282452', 'USER', '你好', '2025-08-26 13:43:39', NULL);
 INSERT INTO `ai_chatbot_chat_record` VALUES ('f3250d184c2aa199210d8c56ea264263', '2', 'ASSISTANT', '根据查询到的系统菜单权限信息，以下是当前系统菜单权限的结构和现状：\n\n---\n\n### **一级菜单：首页**\n- **路径**：`/home`\n- **图标**：`home`\n- **排序号**：0\n- **是否隐藏**：否\n- **权限级别**：2\n- **描述**：这是系统的主页面。\n\n---\n\n### **一级菜单：系统管理**\n- **路径**：空（父级菜单）\n- **图标**：`system-setting`\n- **排序号**：1\n- **是否隐藏**：否\n- **权限级别**：1\n- **子菜单**：\n  1. **菜单权限**\n     - **路径**：`/permission`\n     - **图标**：`view-list`\n     - **排序号**：1\n     - **是否隐藏**：否\n     - **权限级别**：3\n     - **描述**：用于管理系统的菜单权限定义。\n\n  2. **用户管理**\n     - **路径**：`/user`\n     - **图标**：`user-setting`\n     - **排序号**：2\n     - **是否隐藏**：否\n     - **权限级别**：3\n     - **子功能**：\n       - **按钮-新增用户**\n         - **路径**：空\n         - **图标**：无\n         - **排序号**：0\n         - **是否隐藏**：否\n         - **权限代码**：`SYS_USER_ADD`\n         - **权限级别**：4\n         - **描述**：新增用户功能的按钮权限。\n\n  3. **群组管理**\n     - **路径**：`/group`\n     - **图标**：`usergroup`\n     - **排序号**：3\n     - **是否隐藏**：否\n     - **权限级别**：2\n     - **描述**：用于管理用户群组。\n\n  4. **角色管理**\n     - **路径**：`/role`\n     - **图标**：`user-marked`\n     - **排序号**：4\n     - **是否隐藏**：否\n     - **权限级别**：2\n     - **描述**：用于管理系统角色。\n\n---\n\n### **总结**\n1. 系统目前有两个一级菜单：**首页** 和 **系统管理**。\n2. **系统管理** 菜单下包含四个子菜单：**菜单权限**、**用户管理**、**群组管理** 和 **角色管理**。\n3. **用户管理** 菜单下还定义了一个具体的按钮权限：**新增用户**（权限代码：`SYS_USER_ADD`），用于控制特定操作。\n4. 权限级别从高到低依次为：1（最高）、2、3、4（最低）。\n\n如果需要进一步调整或查询特定权限，请随时告知！', '2025-08-22 10:06:40', NULL);
+INSERT INTO `ai_chatbot_chat_record` VALUES ('f3ccdf3062ab404e7128c09691d3aa93', '2', 'USER', '系统菜单权限现状，用表格呈现', '2025-08-26 14:38:38', NULL);
 
 -- ----------------------------
 -- Table structure for ai_chatbot_conversation
@@ -53,7 +69,12 @@ CREATE TABLE `ai_chatbot_conversation`  (
 -- ----------------------------
 -- Records of ai_chatbot_conversation
 -- ----------------------------
+INSERT INTO `ai_chatbot_conversation` VALUES ('1', '你好', '1948042872317145090', '2025-08-26 11:21:41', NULL);
 INSERT INTO `ai_chatbot_conversation` VALUES ('2', '系统菜单权限现状', '1948042872317145090', '2025-08-22 10:06:25', NULL);
+INSERT INTO `ai_chatbot_conversation` VALUES ('7365982097029282452', '你好', '1948042872317145090', '2025-08-26 13:43:05', NULL);
+INSERT INTO `ai_chatbot_conversation` VALUES ('7365983400854977077', 'hello，你好呀', '1948042872317145090', '2025-08-26 13:48:16', NULL);
+INSERT INTO `ai_chatbot_conversation` VALUES ('7365996222703768610', '系统菜单权限现状，用...', '1948042872317145090', '2025-08-26 14:39:13', NULL);
+INSERT INTO `ai_chatbot_conversation` VALUES ('7368548139356257113', '真牛逼呀', '1948042872317145090', '2025-09-02 15:39:37', NULL);
 
 -- ----------------------------
 -- Table structure for sys_group
@@ -190,7 +211,7 @@ CREATE TABLE `sys_user`  (
 -- Records of sys_user
 -- ----------------------------
 INSERT INTO `sys_user` VALUES ('1948042872317145090', '管理员', 'admin', '91cd443c866ab888fc0cf781690159e1', 'tleXavQC', NULL, 1, NULL, NULL, '2025-07-23 23:29:48', '2025-07-29 14:41:21', NULL, NULL, 0);
-INSERT INTO `sys_user` VALUES ('1952555299658698754', '王小熙', 'wxx', '1702836bf16f664c7450f1ef917cb135', 'nLH9ESPs', NULL, 1, NULL, NULL, '2025-08-05 10:20:34', NULL, NULL, NULL, 0);
+INSERT INTO `sys_user` VALUES ('1952555299658698754', '王小熙', 'wxx', 'a311ea108a73510e9eb4c785133f5ac9', 'i7jgowQq', NULL, 1, NULL, NULL, '2025-08-05 10:20:34', '2025-09-11 10:36:15', NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for sys_user_group
