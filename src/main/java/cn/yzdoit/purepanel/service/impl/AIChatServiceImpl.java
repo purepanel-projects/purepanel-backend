@@ -75,7 +75,7 @@ public class AIChatServiceImpl implements AIChatService {
 
         //模型名称为空时，使用默认模型
         if (StrUtil.isBlank(modelName)) {
-            modelName = DashScopeApi.ChatModel.QWEN_PLUS.getName();
+            modelName = DashScopeApi.ChatModel.QWEN_MAX.getName();
         } else if (!supportModeNameSet.contains(modelName)) {
             return Flux.just("不支持的模型");
         }
